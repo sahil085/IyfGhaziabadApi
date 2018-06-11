@@ -1,0 +1,14 @@
+dumps
+.gradle
+/build
+/gradle
+/test
+target
+.idea
+*.iml
+.classpath
+.project
+.settings
+.tmp
+.merge_file*
+.DS_Store
