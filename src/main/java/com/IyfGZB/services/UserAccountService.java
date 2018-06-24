@@ -35,6 +35,10 @@ public class UserAccountService {
             userInfo.setVedicLevel(VedicLevel.VEDIC_LEVEL_ONE);
             userInfo.setBrahmchari(false);
             userInfo.setPassword(Encryptpassword.encryptPassword(userInfo.getPassword()));
+            if(userInfo.getRoundsChant()==null)
+            {
+                userInfo.setRoundsChant(0);
+            }
             userInfoRepository.saveAndFlush(userInfo);
             return "Registered Successfully";
         }catch (Exception e)

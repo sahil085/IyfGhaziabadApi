@@ -38,6 +38,10 @@ public class Session extends BaseModel implements Serializable {
 
     private String iskconCenter;
 
+    private Integer TotalNumberOfAvailableSeats;
+
+    private Integer TotalNumberOfSeats;
+
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Set<SessionStudyMaterial> studyMaterials=new HashSet<>();
 
@@ -155,5 +159,21 @@ public class Session extends BaseModel implements Serializable {
 
     public void setOnlineRoomKey(String onlineRoomKey) {
         this.onlineRoomKey = onlineRoomKey;
+    }
+
+    public Integer getTotalNumberOfAvailableSeats() {
+        return TotalNumberOfAvailableSeats;
+    }
+
+    public void setTotalNumberOfAvailableSeats(Integer totalNumberOfAvailableSeats) {
+        TotalNumberOfAvailableSeats = totalNumberOfAvailableSeats;
+    }
+
+    public Integer getTotalNumberOfSeats() {
+        return TotalNumberOfSeats;
+    }
+
+    public void setTotalNumberOfSeats(Integer totalNumberOfSeats) {
+        TotalNumberOfSeats = totalNumberOfSeats;
     }
 }
