@@ -2,6 +2,7 @@ dumps
 .gradle
 /build
 /gradle
+/classes
 /test
 target
 .idea
