@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name="User_Info")
 @Scope("session")
-public  class UserInfo implements UserDetails{
+public  class UserInfo extends BaseModel implements Serializable {
 
     /**
      * Description of the property id.
@@ -24,123 +25,222 @@ public  class UserInfo implements UserDetails{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id ;
-    /**
-     * Description of the property email.
-     */
+
+    @Column(nullable = false)
+    private String username;
     @Column(unique = true)
-    private String username ;
-    /**
-     * Description of the property password.
-     */
-    @JsonProperty(access = Access.WRITE_ONLY)
+    private String email ;
+
+    @Column(nullable = false)
     private String password ;
-    /**
-     * Description of the property role , to grant authority to the user .
-     */
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="user_roles",
-            joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
-            inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")}
-    )
-    private Set<Role> role;
-    /**
-     * Description of the property full name.
-     */
-    private String fullName;
 
-    public UserInfo(){
+    @Column(nullable = false)
+    private String gender;
 
-    }
+    @Column(unique = true)
+    private Long mobileNumber;
 
-    public UserInfo(String username, String password, String fullName){
-        this.username=username;
-        this.password= password;
-        this.fullName=fullName;
-    }
-    @JsonIgnore
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    @Column(nullable = false)
+    private Long alternateMobileNumber;
 
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    @Column(nullable = false)
+    private String currentAddress;
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    @Column(nullable = false)
+    private String permanentAddress;
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+    @Column(nullable = false)
+    private String city;
 
-    @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new HashSet<>();
-        role.forEach(r -> {
-            authorities.add(new SimpleGrantedAuthority(r.getRole()));
-        });
-        return authorities;
-    }
+    @Column(nullable = false)
+    private String street;
 
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role +
-                ",]";
-    }
+    @Column(nullable = false)
+    private String isInitiated;
 
-    @Override
-    public String getPassword() {
-        // TODO Auto-generated method stub
-        return password;
-    }
+    @Column(nullable = false)
+    private Integer roundsChant;
 
-    @Override
-    public String getUsername() {
-        // TODO Auto-generated method stub
-        return username;
-    }
+    @Column(nullable = false)
+    private String FacilitatorName;
 
-    public Set<Role> getRole() {
-        return role;
-    }
+    @Column(nullable = false)
+    private String nearestIskconTemple;
 
-    public void setRole(Set<Role> role) {
-        this.role = role;
+    @Column(nullable = false)
+    private Integer vedicLevel;
+
+    @Column(nullable = false)
+    private Boolean isBrahmchari;
+
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    Set<Role> roles= new HashSet<>();
+
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getFullName() {
-        return fullName;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
-    public Long getId() {
-        return id;
+    public Long getMobileNumber() {
+        return mobileNumber;
     }
 
+    public void setMobileNumber(Long mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
 
+    public Long getAlternateMobileNumber() {
+        return alternateMobileNumber;
+    }
 
+    public void setAlternateMobileNumber(Long alternateMobileNumber) {
+        this.alternateMobileNumber = alternateMobileNumber;
+    }
+
+    public String getCurrentAddress() {
+        return currentAddress;
+    }
+
+    public void setCurrentAddress(String currentAddress) {
+        this.currentAddress = currentAddress;
+    }
+
+    public String getPermanentAddress() {
+        return permanentAddress;
+    }
+
+    public void setPermanentAddress(String permanentAddress) {
+        this.permanentAddress = permanentAddress;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getIsInitiated() {
+        return isInitiated;
+    }
+
+    public void setIsInitiated(String isInitiated) {
+        this.isInitiated = isInitiated;
+    }
+
+    public Integer getRoundsChant() {
+        return roundsChant;
+    }
+
+    public void setRoundsChant(Integer roundsChant) {
+        this.roundsChant = roundsChant;
+    }
+
+    public String getFacilitatorName() {
+        return FacilitatorName;
+    }
+
+    public void setFacilitatorName(String facilitatorName) {
+        FacilitatorName = facilitatorName;
+    }
+
+    public String getNearestIskconTemple() {
+        return nearestIskconTemple;
+    }
+
+    public void setNearestIskconTemple(String nearestIskconTemple) {
+        this.nearestIskconTemple = nearestIskconTemple;
+    }
+
+    public Integer getVedicLevel() {
+        return vedicLevel;
+    }
+
+    public void setVedicLevel(Integer vedicLevel) {
+        this.vedicLevel = vedicLevel;
+    }
+
+    public Boolean getBrahmchari() {
+        return isBrahmchari;
+    }
+
+    public void setBrahmchari(Boolean brahmchari) {
+        isBrahmchari = brahmchari;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", gender='" + gender + '\'' +
+                ", mobileNumber=" + mobileNumber +
+                ", alternateMobileNumber=" + alternateMobileNumber +
+                ", currentAddress='" + currentAddress + '\'' +
+                ", permanentAddress='" + permanentAddress + '\'' +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", isInitiated='" + isInitiated + '\'' +
+                ", roundsChant=" + roundsChant +
+                ", FacilitatorName='" + FacilitatorName + '\'' +
+                ", nearestIskconTemple='" + nearestIskconTemple + '\'' +
+                ", vedicLevel=" + vedicLevel +
+                ", isBrahmchari=" + isBrahmchari +
+                ", roles=" + roles +
+                '}';
+    }
 }

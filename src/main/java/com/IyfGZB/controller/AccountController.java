@@ -4,6 +4,7 @@ import com.IyfGZB.domain.Role;
 import com.IyfGZB.domain.UserInfo;
 import com.IyfGZB.roleconstant.RolesConstant;
 import com.IyfGZB.securityservices.UserService;
+import com.IyfGZB.services.UserAccountService;
 import com.IyfGZB.util.CustomErrorType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.naming.Binding;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,7 +29,7 @@ import java.util.Set;
  * @author kamal berriga
  *
  */
-@RestController
+@Controller
 @RequestMapping("account")
 public class AccountController {
 
@@ -31,60 +37,32 @@ public class AccountController {
 	public static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
 	@Autowired
-	private UserService userService;
+    UserAccountService userAccountService;
 
-	// request method to create a new account by a guest
-	@CrossOrigin
-	@RequestMapping(value = "/register", method = RequestMethod.PUT)
-	public ResponseEntity<?> createUser(@RequestBody UserInfo newUser) {
-		if (userService.find(newUser.getUsername()) != null) {
-			logger.error("username Already exist " + newUser.getUsername());
-			return new ResponseEntity(
-					new CustomErrorType("user with username " + newUser.getUsername() + "already exist "),
-					HttpStatus.CONFLICT);
-		}
-		Role role=new Role();
-		role.setRole(RolesConstant.USER);
-		Set<Role> roles=new HashSet<>();
-		roles.add(role);
-		newUser.setRole(roles);
-		newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
-		return new ResponseEntity<UserInfo>(userService.save(newUser), HttpStatus.CREATED);
-	}
+	@PostMapping("/register")
+    @PreAuthorize("permitAll()")
+    public String registrationProcess(@ModelAttribute UserInfo userInfo, BindingResult bindingResult,
+                                      RedirectAttributes redirectAttributes,
+                                      Model model)
+    {
+        if(bindingResult.hasErrors())
+        {
+            bindingResult.getAllErrors().forEach( e -> logger.error(e.getDefaultMessage()));
+            redirectAttributes.addAttribute("errMessage","Please Try Again After Some Time");
+            return "redirect:/register";
 
-	// this is the login api/service
-	@CrossOrigin
-	@RequestMapping("/login")
-	public Principal user(Principal principal) {
-//		User user=userService.find(principal.getName());
-//		Authentication auth =
-//				new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-//
-//		SecurityContextHolder.getContext().setAuthentication(auth);
+        }else {
+            String msg= userAccountService.createUser(userInfo);
+            if(msg.equals("Please Try Again Registration unsuccessfull"))
+            {
+                redirectAttributes.addAttribute("errMessage",msg);
+              return "redirect:/register";
+            }else {
+                redirectAttributes.addAttribute("message",msg);
+                return "redirect:/home";
+            }
+        }
+    }
 
-		logger.info("user logged "+principal);
-		return principal;
-	}
 
-	@CrossOrigin
-	@PreAuthorize("hasAuthority('USER')")
-	@GetMapping("/user")
-	public UserInfo getUser(){
-
-		UserInfo user=new UserInfo();
-		user.setUsername("hare krishna");
-		user.setFullName("radhe shyam hari guru");
-		return user;
-	}
-	@CrossOrigin
-	@PostMapping("/logout")
-	public String logout()
-	{
-		SecurityContextHolder.getContext().setAuthentication(null);
-		logger.info("------------------- logout");
-		return "logout";
-	}
-
-	
-	
 }
