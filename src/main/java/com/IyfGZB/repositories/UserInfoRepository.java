@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
 
       UserInfo findOneByUsername(String username);
-      UserInfo findByUsername(String username);
+      UserInfo findByEmail(String username);
 
     @Override
     UserInfo getOne(Long aLong);

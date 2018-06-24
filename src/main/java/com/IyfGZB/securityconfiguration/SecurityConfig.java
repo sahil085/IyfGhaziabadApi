@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -15,6 +16,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(securedEnabled = true,jsr250Enabled = true,prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder;
+    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -31,7 +37,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 
                  http.authorizeRequests()
-                .antMatchers("/home","/login/**").permitAll();
+                .antMatchers("/home","/login/**").permitAll()
+                 .and().formLogin()
+                 .usernameParameter("email")
+                 .passwordParameter("password")
+                 .loginPage("/login")
+//                 .loginProcessingUrl("/loginurl")
+                 .successForwardUrl("/dashboard")
+                 .failureForwardUrl("/login.html?error")
+                 .and()
+                 .logout()
+                 .logoutUrl("/logout")
+                 .logoutSuccessUrl("/login.html");
     }
 
     @Bean

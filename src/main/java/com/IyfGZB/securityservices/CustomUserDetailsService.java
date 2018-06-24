@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserInfo user=  null;
         try {
-            user = userRepository.findByUsername(username);
+            user = userRepository.findByEmail(username);
         }catch (Exception ex){
             ex.printStackTrace();
         }
