@@ -1,5 +1,8 @@
 package com.IyfGZB.constants;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class RoleConstant {
 
      public static final String ROLE_ADMIN="ADMIN";

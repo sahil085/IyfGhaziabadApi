@@ -1,5 +1,6 @@
 package com.IyfGZB.securityservices;
 
+import com.IyfGZB.domain.Role;
 import com.IyfGZB.domain.UserInfo;
 import com.IyfGZB.repositories.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -36,7 +39,11 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User does not exists");
         }
         List<SimpleGrantedAuthority> auths = new java.util.ArrayList<SimpleGrantedAuthority>();
-        auths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        Set<Role> roleSet=user.getRoles();
+        roleSet.forEach(role ->
+                auths.add(new SimpleGrantedAuthority(role.getRole())
+        )
+        );
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),

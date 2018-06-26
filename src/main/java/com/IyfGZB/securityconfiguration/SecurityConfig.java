@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -32,23 +33,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-
-            http.csrf().disable();
-
-
-                 http.authorizeRequests()
-                .antMatchers("/home","/login/**").permitAll()
-                 .and().formLogin()
-                 .usernameParameter("email")
-                 .passwordParameter("password")
-                 .loginPage("/login")
-//                 .loginProcessingUrl("/loginurl")
-                 .successForwardUrl("/dashboard")
-                 .failureForwardUrl("/login.html?error")
-                 .and()
-                 .logout()
-                 .logoutUrl("/logout")
-                 .logoutSuccessUrl("/login.html");
+        http.cors().and()
+                // starts authorizing configurations
+                .authorizeRequests()
+                // ignoring the guest's urls "
+                .antMatchers("/account/register","/account/login","/logout").permitAll()
+                // authenticate all remaining URLS
+                .anyRequest().authenticated().and()
+                /* "/logout" will log the user out by invalidating the HTTP Session,
+                 * cleaning up any {link rememberMe()} authentication that was configured, */
+                .logout()
+                .permitAll()
+                .logoutUrl("/account/logout")
+                .logoutSuccessUrl("/account/login")
+                .and()
+                // enabling the basic authentication
+                .httpBasic().and()
+                // configuring the session on the server
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                // disabling the CSRF - Cross Site Request Forgery
+                .csrf().disable();
     }
 
     @Bean

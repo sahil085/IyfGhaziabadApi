@@ -35,11 +35,11 @@ public class UserAccountService {
             userInfo.setVedicLevel(VedicLevel.VEDIC_LEVEL_ONE);
             userInfo.setBrahmchari(false);
             userInfo.setPassword(Encryptpassword.encryptPassword(userInfo.getPassword()));
-            userInfoRepository.saveAndFlush(userInfo);
+            userInfoRepository.save(userInfo);
             return "Registered Successfully";
         }catch (Exception e)
         {
-            logger.error(e.getMessage());
+            System.out.println(e);
             return " Please Try Again Registration unsuccessfull ";
         }
     }

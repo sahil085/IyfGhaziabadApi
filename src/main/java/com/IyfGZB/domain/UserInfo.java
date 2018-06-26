@@ -220,27 +220,5 @@ public  class UserInfo extends BaseModel implements Serializable {
         this.gender = gender;
     }
 
-    @Override
-    public String toString() {
-        return "UserInfo{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", gender='" + gender + '\'' +
-                ", mobileNumber=" + mobileNumber +
-                ", alternateMobileNumber=" + alternateMobileNumber +
-                ", currentAddress='" + currentAddress + '\'' +
-                ", permanentAddress='" + permanentAddress + '\'' +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", isInitiated='" + isInitiated + '\'' +
-                ", roundsChant=" + roundsChant +
-                ", FacilitatorName='" + FacilitatorName + '\'' +
-                ", nearestIskconTemple='" + nearestIskconTemple + '\'' +
-                ", vedicLevel=" + vedicLevel +
-                ", isBrahmchari=" + isBrahmchari +
-                ", roles=" + roles +
-                '}';
-    }
+
 }

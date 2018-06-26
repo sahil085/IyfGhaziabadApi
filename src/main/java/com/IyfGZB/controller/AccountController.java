@@ -34,41 +34,52 @@ import java.util.Set;
 public class AccountController {
 
 
-	public static final Logger logger = LoggerFactory.getLogger(AccountController.class);
+    public static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
-	@Autowired
-    UserAccountService userAccountService;
+    @Autowired
+    private UserService userService;
 
-	@PostMapping("/register")
-    @PreAuthorize("permitAll()")
-    public String registrationProcess(@ModelAttribute UserInfo userInfo, BindingResult bindingResult,
-                                      RedirectAttributes redirectAttributes,
-                                      Model model)
-    {
-        if(bindingResult.hasErrors())
-        {
-            bindingResult.getAllErrors().forEach( e -> logger.error(e.getDefaultMessage()));
-            redirectAttributes.addAttribute("errMessage","Please Try Again After Some Time");
-            return "redirect:/register";
+    // request method to create a new account by a guest
+    @CrossOrigin
+    @RequestMapping(value = "/register", method = RequestMethod.PUT)
+    public ResponseEntity<?> createUser(@RequestBody UserInfo newUser) {
 
-        }else {
-            String msg= userAccountService.createUser(userInfo);
-            if(msg.equals("Please Try Again Registration unsuccessfull"))
-            {
-                redirectAttributes.addAttribute("errMessage",msg);
-              return "redirect:/register";
-            }else {
-                redirectAttributes.addAttribute("message",msg);
-                return "redirect:/home";
-            }
-        }
+        Role role=new Role();
+        role.setRole(RolesConstant.USER);
+        Set<Role> roles=new HashSet<>();
+        roles.add(role);
+        newUser.setRoles(roles);
+        newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
+        return new ResponseEntity<UserInfo>(userService.save(newUser), HttpStatus.CREATED);
     }
 
-//    @PostMapping("/login")
-//    @PreAuthorize("permitAll()")
-//    public void loginProcess(Model model){
-//
-//    }
+    // this is the login api/service
+    @CrossOrigin
+    @RequestMapping("/login")
+    public Principal user(Principal principal) {
+        logger.info("user logged "+principal);
+        return principal;
+    }
+
+    @CrossOrigin
+    @PreAuthorize("hasAuthority('USER')")
+    @GetMapping("/user")
+    public UserInfo getUser(){
+
+        UserInfo user=new UserInfo();
+        user.setUsername("hare krishna");
+        return user;
+    }
+    @CrossOrigin
+    @PostMapping("/logout")
+    public String logout()
+    {
+        SecurityContextHolder.getContext().setAuthentication(null);
+        logger.info("------------------- logout");
+        return "logout";
+    }
+
+
 
 
 }
