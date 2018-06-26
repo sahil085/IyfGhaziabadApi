@@ -28,7 +28,7 @@ public  class UserInfo extends BaseModel implements Serializable {
 
     @Column(nullable = false)
     private String username;
-    @Column(unique = true)
+    @Column(nullable = false)
     private String email ;
 
     @Column(nullable = false)
@@ -40,7 +40,6 @@ public  class UserInfo extends BaseModel implements Serializable {
     @Column(unique = true)
     private Long mobileNumber;
 
-    @Column(nullable = false)
     private Long alternateMobileNumber;
 
     @Column(nullable = false)
@@ -61,8 +60,11 @@ public  class UserInfo extends BaseModel implements Serializable {
     @Column(nullable = false)
     private Integer roundsChant;
 
-    @Column(nullable = false)
-    private String FacilitatorName;
+    private String facilitatorName;
+
+    private String seniorFacilitatorName;
+
+    private String counslerName;
 
     @Column(nullable = false)
     private String nearestIskconTemple;
@@ -181,11 +183,27 @@ public  class UserInfo extends BaseModel implements Serializable {
     }
 
     public String getFacilitatorName() {
-        return FacilitatorName;
+        return facilitatorName;
     }
 
     public void setFacilitatorName(String facilitatorName) {
-        FacilitatorName = facilitatorName;
+        this.facilitatorName = facilitatorName;
+    }
+
+    public String getSeniorFacilitatorName() {
+        return seniorFacilitatorName;
+    }
+
+    public void setSeniorFacilitatorName(String seniorFacilitatorName) {
+        this.seniorFacilitatorName = seniorFacilitatorName;
+    }
+
+    public String getCounslerName() {
+        return counslerName;
+    }
+
+    public void setCounslerName(String counslerName) {
+        this.counslerName = counslerName;
     }
 
     public String getNearestIskconTemple() {
@@ -236,7 +254,9 @@ public  class UserInfo extends BaseModel implements Serializable {
                 ", street='" + street + '\'' +
                 ", isInitiated='" + isInitiated + '\'' +
                 ", roundsChant=" + roundsChant +
-                ", FacilitatorName='" + FacilitatorName + '\'' +
+                ", facilitatorName='" + facilitatorName + '\'' +
+                ", seniorFacilitatorName='" + seniorFacilitatorName + '\'' +
+                ", counslerName='" + counslerName + '\'' +
                 ", nearestIskconTemple='" + nearestIskconTemple + '\'' +
                 ", vedicLevel=" + vedicLevel +
                 ", isBrahmchari=" + isBrahmchari +

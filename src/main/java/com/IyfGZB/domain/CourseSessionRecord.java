@@ -19,6 +19,8 @@ public class CourseSessionRecord implements Serializable {
 
     private String status;
 
+
+
     public Long getId() {
         return id;
     }
