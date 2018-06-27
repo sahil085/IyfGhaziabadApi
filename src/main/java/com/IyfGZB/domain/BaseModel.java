@@ -10,6 +10,7 @@ import java.util.Date;
 @MappedSuperclass
 public class BaseModel {
 
+
     @Column(name = "CREATED_BY")
     private String createdBy;
 
