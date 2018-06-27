@@ -3,7 +3,6 @@ package com.IyfGZB.controller;
 import com.IyfGZB.constants.RoleConstant;
 import com.IyfGZB.domain.Role;
 import com.IyfGZB.domain.UserInfo;
-import com.IyfGZB.roleconstant.RolesConstant;
 import com.IyfGZB.securityservices.UserService;
 import com.IyfGZB.services.UserAccountService;
 import com.IyfGZB.util.CustomErrorType;
