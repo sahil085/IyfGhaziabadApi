@@ -24,8 +24,8 @@ public class AdminCourseController {
 
     @Autowired
     private CourseOperation courseOperation;
-
-    @PostMapping("/createcourse/{userid}")
+    @CrossOrigin
+    @PostMapping("/createcourse")
     public ResponseEntity<?> createCourse(@RequestBody Course course)
     {
         try
@@ -39,7 +39,7 @@ public class AdminCourseController {
         }
 
     }
-
+    @CrossOrigin
     @GetMapping("/courselist/{createdBy}")
     public ResponseEntity<?> getAllCourses(@PathVariable("createdBy") String createdBy)
     {
@@ -51,7 +51,7 @@ public class AdminCourseController {
             return new ResponseEntity<String>("No Courses Yet",HttpStatus.OK);
         }
     }
-
+    @CrossOrigin
     @DeleteMapping("/deletecourse/{courseid}")
     public ResponseEntity<?> deleteCourse(@PathVariable("courseid") Long courseId)
     {
@@ -63,7 +63,7 @@ public class AdminCourseController {
            return new ResponseEntity<CommonResponseDTO>(new CommonResponseDTO("danger","Course Could Not Be Deleted Please Try Again"),HttpStatus.OK);
        }
     }
-
+    @CrossOrigin
     @PutMapping("/updatecourse/{courseid}/{createdby}")
     public ResponseEntity<?> updateCourse(@PathVariable("courseid") Long courseId
                                             ,@RequestBody Course course)
