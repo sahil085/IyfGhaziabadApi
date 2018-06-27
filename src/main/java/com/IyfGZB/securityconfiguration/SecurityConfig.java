@@ -77,6 +77,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .logout()
                 .permitAll()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
+                .logoutUrl("/account/logout")
+                .logoutSuccessUrl("/account/login")
                 .and()
                 // enabling the basic authentication
                 .httpBasic().and()
