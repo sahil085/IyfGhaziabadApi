@@ -1,8 +1,8 @@
 package com.IyfGZB.controller;
 
+import com.IyfGZB.constants.RoleConstant;
 import com.IyfGZB.domain.Role;
 import com.IyfGZB.domain.UserInfo;
-import com.IyfGZB.roleconstant.RolesConstant;
 import com.IyfGZB.securityservices.UserService;
 import com.IyfGZB.services.UserAccountService;
 import com.IyfGZB.util.CustomErrorType;
@@ -50,11 +50,10 @@ public class AccountController {
     public ResponseEntity<?> createUser(@RequestBody UserInfo newUser) {
 
         Role role=new Role();
-        role.setRole(RolesConstant.USER);
+        role.setRole(RoleConstant.ROLE_USER);
         Set<Role> roles=new HashSet<>();
         roles.add(role);
         newUser.setRoles(roles);
-        String encode=bCryptPasswordEncoder.encode(newUser.getPassword());
 //        newUser.setPassword(encode);
         return new ResponseEntity<String>(userAccountService.createUser(newUser), HttpStatus.CREATED);
     }
