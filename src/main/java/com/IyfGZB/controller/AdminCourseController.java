@@ -25,7 +25,7 @@ public class AdminCourseController {
     @Autowired
     private CourseOperation courseOperation;
 
-    @PostMapping("/createcourse/{userid}")
+    @PostMapping("/createcourse")
     public ResponseEntity<?> createCourse(@RequestBody Course course)
     {
         try
