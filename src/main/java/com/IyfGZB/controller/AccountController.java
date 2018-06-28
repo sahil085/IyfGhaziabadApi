@@ -3,6 +3,7 @@ package com.IyfGZB.controller;
 import com.IyfGZB.constants.RoleConstant;
 import com.IyfGZB.domain.Role;
 import com.IyfGZB.domain.UserInfo;
+import com.IyfGZB.securityservices.CurrentUser;
 import com.IyfGZB.securityservices.UserService;
 import com.IyfGZB.services.UserAccountService;
 import com.IyfGZB.util.CustomErrorType;
@@ -35,6 +36,9 @@ import java.util.Set;
 @RestController
 @RequestMapping("account")
 public class AccountController {
+
+
+
 
 
     public static final Logger logger = LoggerFactory.getLogger(AccountController.class);
@@ -88,10 +92,7 @@ public class AccountController {
     @GetMapping("/check")
     public void pass()
     {
-        PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
-        String encode=passwordEncoder.encode("123");
-
-        System.out.println(" ----  "+ passwordEncoder.matches("123",encode));
+         CurrentUser.getCurrentUser();
     }
 
 

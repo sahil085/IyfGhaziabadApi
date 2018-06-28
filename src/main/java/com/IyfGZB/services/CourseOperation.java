@@ -2,12 +2,15 @@ package com.IyfGZB.services;
 
 import com.IyfGZB.CourseDTO.CommonResponseDTO;
 import com.IyfGZB.domain.Course;
+import com.IyfGZB.domain.UserInfo;
 import com.IyfGZB.repositories.CourseRepo;
+import com.IyfGZB.securityservices.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -20,11 +23,16 @@ public class CourseOperation {
     public CommonResponseDTO create(Course course)
     {
         try {
+            UserInfo userInfo=CurrentUser.getCurrentUser();
+            course.setCreatedDate(new Date());
+            course.setModifiedDate(new Date());
+            course.setModifiedBy(userInfo.getEmail());
+            course.setCreatedBy(userInfo.getEmail());
             courseRepo.save(course);
             return new CommonResponseDTO("success", "Course Created Successfully");
         }catch (Exception e)
         {
-            logger.error(" error in create course service "+e.getMessage());
+            logger.error(" error in create course service "+e);
             return new CommonResponseDTO("danger", "OOPS..!! Course Could Not Be Create Please Try Again");
         }
     }
@@ -47,7 +55,7 @@ public class CourseOperation {
     public List<Course> getAllCourse(String createdBy) {
 
         try{
-            return courseRepo.findAllByCreatedBy(createdBy);
+            return null;
         }catch (Exception e){
             logger.error(e.getMessage());
             return null;

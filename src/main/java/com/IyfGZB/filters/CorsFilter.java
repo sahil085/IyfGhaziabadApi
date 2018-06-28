@@ -37,10 +37,10 @@ public class CorsFilter implements Filter {
         response.setHeader("Access-Control-Expose-Headers", "X-Requested-With, Authorization, Origin, Content-Type");
 
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
-        if (!request.getMethod().equals("OPTIONS")) {
-            filterChain.doFilter(servletRequest, servletResponse);
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
         } else {
-            // do not continue with filter chain for options requests
+            filterChain.doFilter(request, response);
         }
     }
 
