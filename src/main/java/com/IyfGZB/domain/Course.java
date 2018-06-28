@@ -31,6 +31,20 @@ public class Course  implements Serializable {
     @Column(nullable = false)
     private String duration;
 
+    @Column(name = "CREATED_BY")
+    private String createdBy;
+
+    @Column(name = "MODIFIED_BY")
+    private String modifiedBy;
+
+    @Column(name = "DATE_CREATED")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Column(name = "DATE_MODIFIED")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modifiedDate;
+
 
     public Long getId() {
         return id;
@@ -86,5 +100,37 @@ public class Course  implements Serializable {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 }
