@@ -20,24 +20,24 @@ public class AdminSeminarController {
     @GetMapping("/seminarlist/{createdBy}")
     public List<Seminar> getAllSeminar(@PathVariable("createdBy") String createdBy)
     {
-
+        return null;
     }
 
-    @PostMapping("/createseminar")
-    public ResponseEntity<?> createSeminar()
-    {
-        try{
-
-
-
-        }catch (Exception e){
-            logger.error(e.getMessage());
-            return new ResponseEntity<CommonResponseDTO>(new CommonResponseDTO("danger",
-                    "OOPS..!! Seminar Could Not Created Please Try Again"),HttpStatus.OK);
-
-        }
-
-    }
+//    @PostMapping("/createseminar")
+//    public ResponseEntity<?> createSeminar()
+//    {
+//        try{
+//
+//
+//
+//        }catch (Exception e){
+//            logger.error(e.getMessage());
+//            return new ResponseEntity<CommonResponseDTO>(new CommonResponseDTO("danger",
+//                    "OOPS..!! Seminar Could Not Created Please Try Again"),HttpStatus.OK);
+//
+//        }
+//
+//    }
 
 
 
