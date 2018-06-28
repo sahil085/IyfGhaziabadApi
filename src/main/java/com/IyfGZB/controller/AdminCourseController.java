@@ -31,18 +31,17 @@ public class AdminCourseController {
 
     @CrossOrigin
     @PostMapping(value = "/createcourse",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public CommonResponseDTO createCourse(@RequestBody Course course)
+    public ResponseEntity<?> createCourse(@RequestBody Course course)
     {
         try
         {
 
-           return courseOperation.create(course);
+           return new ResponseEntity<>(courseOperation.create(course),HttpStatus.OK);
 
         }catch (Exception e)
         {
             logger.error(" error in create course "+e.getMessage());
-            return null;
-//            return new ResponseEntity<>(new CommonResponseDTO("danger","Course Could Not Be Created Please Try Again"),HttpStatus.OK);
+            return new ResponseEntity<>(new CommonResponseDTO("danger","Course Could Not Be Created Please Try Again"),HttpStatus.OK);
         }
 
     }
