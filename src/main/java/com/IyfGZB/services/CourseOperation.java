@@ -24,7 +24,7 @@ public class CourseOperation {
             return new CommonResponseDTO("success", "Course Created Successfully");
         }catch (Exception e)
         {
-            logger.error(" error in create course service "+e.getMessage());
+            logger.error(" error in create course service "+e);
             return new CommonResponseDTO("danger", "OOPS..!! Course Could Not Be Create Please Try Again");
         }
     }
@@ -47,7 +47,7 @@ public class CourseOperation {
     public List<Course> getAllCourse(String createdBy) {
 
         try{
-            return courseRepo.findAllByCreatedBy(createdBy);
+            return null;
         }catch (Exception e){
             logger.error(e.getMessage());
             return null;

@@ -11,6 +11,4 @@ import java.util.List;
 public interface CourseRepo extends JpaRepository<Course,Long> {
 
     Course findCourseById(Long id);
-    List<Course> findAllByCreatedBy(String createdBy);
-
 }

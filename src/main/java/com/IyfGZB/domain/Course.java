@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Course extends BaseModel implements Serializable {
+public class Course  implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

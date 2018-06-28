@@ -9,13 +9,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 @RestController
 @RequestMapping("admin")
-@PreAuthorize("hasAnyAuthority(roleConstant.ROLE_ADMIN)")
+@PreAuthorize("hasAnyAuthority('USER')")
 public class AdminCourseController {
 
     public static final Logger logger = LoggerFactory.getLogger(AdminCourseController.class);
@@ -24,18 +28,21 @@ public class AdminCourseController {
 
     @Autowired
     private CourseOperation courseOperation;
+
     @CrossOrigin
-    @PostMapping("/createcourse")
-    public ResponseEntity<?> createCourse(@RequestBody Course course)
+    @PostMapping(value = "/createcourse",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public CommonResponseDTO createCourse(@RequestBody Course course)
     {
         try
         {
-           return new ResponseEntity<CommonResponseDTO>(courseOperation.create(course),HttpStatus.CREATED);
+
+           return courseOperation.create(course);
 
         }catch (Exception e)
         {
             logger.error(" error in create course "+e.getMessage());
-            return new ResponseEntity<CommonResponseDTO>(new CommonResponseDTO("danger","Course Could Not Be Created Please Try Again"),HttpStatus.OK);
+            return null;
+//            return new ResponseEntity<>(new CommonResponseDTO("danger","Course Could Not Be Created Please Try Again"),HttpStatus.OK);
         }
 
     }
