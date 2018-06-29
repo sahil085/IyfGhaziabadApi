@@ -12,3 +12,4 @@ target
 .tmp
 .merge_file*
 .DS_Store
+/.gradle
