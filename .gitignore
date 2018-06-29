@@ -1,6 +1,7 @@
 dumps
 
 /build
+.gradle
 /classes
 /test
 target
