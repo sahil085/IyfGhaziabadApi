@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Seminar extends BaseModel implements Serializable {
+public class Seminar  implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -21,8 +21,25 @@ public class Seminar extends BaseModel implements Serializable {
     @Temporal(TemporalType.TIME)
     private Date endTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date date;
+
+
+    @Column(name = "CREATED_BY")
+    private String createdBy;
+
+    @Column(name = "MODIFIED_BY")
+    private String modifiedBy;
+
+    @Column(name = "DATE_CREATED")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Column(name = "DATE_MODIFIED")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modifiedDate;
+
+
 
     private String speakerName;
 
@@ -35,6 +52,39 @@ public class Seminar extends BaseModel implements Serializable {
     private Integer TotalNumberOfAvailableSeats;
 
     private Integer TotalNumberOfSeats;
+
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
 
     public Long getId() {
         return id;

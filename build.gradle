@@ -44,7 +44,19 @@ dependencies {
     // https://mvnrepository.com/artifact/postgresql/postgresql
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1201-jdbc41'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '1.5.13.RELEASE'
+// https://mvnrepository.com/artifact/org.springframework/spring-context-support
+    compile group: 'org.springframework', name: 'spring-context-support', version: '3.2.0.RELEASE'
 
+
+// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-velocity
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-velocity
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-velocity', version: '1.1.1.RELEASE'
+
+
+// https://mvnrepository.com/artifact/org.apache.velocity/velocity
+    compile group: 'org.apache.velocity', name: 'velocity', version: '1.6.2'
 
     // https://mvnrepository.com/artifact/org.json/json
     compile group: 'org.json', name: 'json', version: '20090211'
