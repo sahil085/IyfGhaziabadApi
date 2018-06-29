@@ -57,9 +57,9 @@ public class Seminar  implements Serializable {
 
     private String category;
 
-    private Integer TotalNumberOfAvailableSeats;
+    private Long totalNumberOfAvailableSeats;
 
-    private Integer TotalNumberOfSeats;
+    private Long totalNumberOfSeats;
 
 
     public String getCreatedBy() {
@@ -174,19 +174,19 @@ public class Seminar  implements Serializable {
         this.category = category;
     }
 
-    public Integer getTotalNumberOfAvailableSeats() {
-        return TotalNumberOfAvailableSeats;
+    public Long getTotalNumberOfAvailableSeats() {
+        return totalNumberOfAvailableSeats;
     }
 
-    public void setTotalNumberOfAvailableSeats(Integer totalNumberOfAvailableSeats) {
-        TotalNumberOfAvailableSeats = totalNumberOfAvailableSeats;
+    public void setTotalNumberOfAvailableSeats(Long totalNumberOfAvailableSeats) {
+        this.totalNumberOfAvailableSeats = totalNumberOfAvailableSeats;
     }
 
-    public Integer getTotalNumberOfSeats() {
-        return TotalNumberOfSeats;
+    public Long getTotalNumberOfSeats() {
+        return totalNumberOfSeats;
     }
 
-    public void setTotalNumberOfSeats(Integer totalNumberOfSeats) {
-        TotalNumberOfSeats = totalNumberOfSeats;
+    public void setTotalNumberOfSeats(Long totalNumberOfSeats) {
+        this.totalNumberOfSeats = totalNumberOfSeats;
     }
 }
