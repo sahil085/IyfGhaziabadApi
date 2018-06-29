@@ -37,7 +37,7 @@ public class SeminarNotificationService {
     public void sendEmail(Seminar seminar) throws MessagingException {
 
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("title", seminar.getTittle());
+        model.put("title", seminar.getTitle());
         model.put("speakername",seminar.getSpeakerName());
         String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/template/seminarEmailTemplte", "UTF-8", model);
 
