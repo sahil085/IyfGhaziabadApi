@@ -1,10 +1,40 @@
 <html>
+<head>
+     <link href="https://fonts.googleapis.com/css?family=Teko:500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:700" rel="stylesheet">
+</head>
 <body>
-<div style="background-color: yellow">
-    <h1> Hare Krishna </h1>
-    <h3>${title}</h3>
-    <p>${speakername}</p>
+<div class="bgimg" style="background-image: url('https://hdbackgroundspot.com//storage/upload/black-abstract-background/black-abstract-background-1.jpg')">
+<div class="row" style="color: white;">
+    <center>
+        <img src="https://raw.githubusercontent.com/ravi97garg/codes/master/logo.png" style="max-width: 45%;margin-top: 15px">
+        <div>
+            <h3 style="color: white">presents</h3>
+            <h1 style="font-family: 'Titillium Web', sans-serif; font-size: 60px;color: white"> ${title} </h1>
+            <h3 style="font-size: 32px;color: white;">Date : ${date}</h3>
+            <h4 style="font-size: 28px;color: white;">Timings : ${startTime} - ${endTime}</h4>
+            <h4 style="color: white;font-size: 28px">${day}</h4>
+           <h5 style="color: white;font-size: 28px">
+               ::Speaker::
+           </h5>
+            <h1 style="color: white">${speakerName}</h1>
+        </div>
+    </center>
+    <br/>
+    <p style="text-align:left; font-size: 30px;margin:1px 1px 15px 10px">Venue : ${venue}
+    </p>
+    <h3 style="margin-left: 10px">Contact : 8375818918 / 9958473800</h3>
 </div>
+</div>
+
+<b>Seminar Description </b> :
+<br/>
+${seminarDesc}
+<hr/>
+<b> Speaker Description </b> :
+<br/>
+${speakerDesc}
+
 
 </body>
 </html>
