@@ -58,18 +58,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 auths.add(new SimpleGrantedAuthority(role.getRole())
         )
         );
-        Authentication auth = new UsernamePasswordAuthenticationToken(user.getUsername (),user.getPassword (),auths);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                true,
-                true,
-                true,
-                true,
-                auths
-        );
+        return user;
     }
 
 }
