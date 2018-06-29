@@ -46,7 +46,7 @@ public class SeminarNotificationService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-//        mimeMessageHelper.setFrom();
+        mimeMessageHelper.setFrom("vermasahil269@gmail.com");
         mimeMessageHelper.setTo(String.join(",",userInfoOperation.getallEmails()));
         mimeMessageHelper.setSubject(subject);
         mimeMessageHelper.setText(text, true);
