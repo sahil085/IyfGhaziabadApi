@@ -12,9 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -34,12 +36,18 @@ private GoogleDriveService googleDriveService;
         return null;
     }
 
-    @PostMapping("/createseminar")
-    public ResponseEntity<?> createSeminar(@RequestBody Seminar seminar)
+    @PostMapping(value = "/createseminar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createSeminar(@RequestPart("form") Seminar seminar, @RequestPart("file") MultipartFile multipartFile)
     {
         try{
 
-            return new ResponseEntity<>(seminarOperation.createSeminar(seminar),HttpStatus.OK);
+            System.out.println(seminar);
+
+            googleDriveService.uploadFile(seminar,multipartFile);
+            return null;
+
+//
+//            return new ResponseEntity<>(seminarOperation.createSeminar(seminar),HttpStatus.OK);
         }catch (Exception e){
             logger.error(e.getMessage());
             return new ResponseEntity<CommonResponseDTO>(new CommonResponseDTO("danger",
@@ -52,7 +60,7 @@ private GoogleDriveService googleDriveService;
     @GetMapping("/drive")
     public void getDrive() throws GeneralSecurityException, IOException {
 
-        googleDriveService.getDriveService("");
+        googleDriveService.getDriveService();
 
     }
 

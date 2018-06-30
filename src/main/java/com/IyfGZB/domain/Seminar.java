@@ -2,6 +2,7 @@ package com.IyfGZB.domain;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,7 +15,7 @@ public class Seminar  implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id ;
 
-@Column(nullable = false)
+    @Column(nullable = false)
     private String title;
     @Column(nullable = false)
 
@@ -46,7 +47,6 @@ public class Seminar  implements Serializable {
     @Column(name = "DATE_MODIFIED",nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifiedDate;
-
 
 
     private String speakerName;
@@ -197,5 +197,28 @@ public class Seminar  implements Serializable {
 
     public void setThumbNailUrl(String thumbNailUrl) {
         this.thumbNailUrl = thumbNailUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "Seminar{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", venue='" + venue + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", date=" + date +
+                ", createdBy='" + createdBy + '\'' +
+                ", modifiedBy='" + modifiedBy + '\'' +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
+                ", speakerName='" + speakerName + '\'' +
+                ", speakerDescription='" + speakerDescription + '\'' +
+                ", seminarDescription='" + seminarDescription + '\'' +
+                ", category='" + category + '\'' +
+                ", totalNumberOfAvailableSeats=" + totalNumberOfAvailableSeats +
+                ", totalNumberOfSeats=" + totalNumberOfSeats +
+                ", thumbNailUrl='" + thumbNailUrl + '\'' +
+                '}';
     }
 }
