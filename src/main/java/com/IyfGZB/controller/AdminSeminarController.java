@@ -4,13 +4,17 @@ package com.IyfGZB.controller;
 import com.IyfGZB.CourseDTO.CommonResponseDTO;
 import com.IyfGZB.domain.Seminar;
 import com.IyfGZB.services.SeminarOperation;
+import com.IyfGZB.util.GoogleDriveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 @RestController
@@ -21,7 +25,10 @@ public class AdminSeminarController {
 @Autowired
 private SeminarOperation seminarOperation;
 
-    @GetMapping("/seminarlist/{createdBy}")
+@Autowired
+private GoogleDriveService googleDriveService;
+
+    @GetMapping(value = "/seminarlist/{createdBy}")
     public List<Seminar> getAllSeminar(@PathVariable("createdBy") String createdBy)
     {
         return null;
@@ -39,6 +46,13 @@ private SeminarOperation seminarOperation;
                     "OOPS..!! Seminar Could Not Created Please Try Again"),HttpStatus.OK);
 
         }
+
+    }
+
+    @GetMapping("/drive")
+    public void getDrive() throws GeneralSecurityException, IOException {
+
+        googleDriveService.getDriveService("");
 
     }
 

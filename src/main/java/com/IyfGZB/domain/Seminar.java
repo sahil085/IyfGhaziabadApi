@@ -61,6 +61,7 @@ public class Seminar  implements Serializable {
 
     private Long totalNumberOfSeats;
 
+    private String thumbNailUrl;
 
     public String getCreatedBy() {
         return createdBy;
@@ -188,5 +189,13 @@ public class Seminar  implements Serializable {
 
     public void setTotalNumberOfSeats(Long totalNumberOfSeats) {
         this.totalNumberOfSeats = totalNumberOfSeats;
+    }
+
+    public String getThumbNailUrl() {
+        return thumbNailUrl;
+    }
+
+    public void setThumbNailUrl(String thumbNailUrl) {
+        this.thumbNailUrl = thumbNailUrl;
     }
 }

@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 // starts authorizing configurations
                 .authorizeRequests()
                 // ignoring the guest's urls "
-                .antMatchers("/account/register","/account/login","/logout","/account/check").permitAll()
+                .antMatchers("/account/register","/account/login","/logout","/account/check","/admin/drive").permitAll()
                 // authenticate all remaining URLS
                 .anyRequest().authenticated().and()
                 /* "/logout" will log the user out by invalidating the HTTP Session,
