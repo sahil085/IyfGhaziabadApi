@@ -28,42 +28,36 @@ public class GoogleDriveService {
     public  Drive getDriveService() throws GeneralSecurityException,
             IOException {
 
-        java.io.File key = new java.io.File("Iskcongzb-5f95df94ece9.p12");
+        java.io.File key = new java.io.File("Iskcongzb-0f45852524c6.p12");
         System.out.println(key.getAbsolutePath());
         HttpTransport httpTransport = new NetHttpTransport();
         JacksonFactory jsonFactory = new JacksonFactory();
         GoogleCredential credential = new GoogleCredential.Builder()
                 .setTransport(httpTransport)
                 .setJsonFactory(jsonFactory)
-                .setServiceAccountId("iconnect@iskcongzb-6cbb6.iam.gserviceaccount.com")
+                .setServiceAccountId("drive-441@iskcongzb-6cbb6.iam.gserviceaccount.com")
                 .setServiceAccountScopes(Arrays.asList(DriveScopes.DRIVE))
-                .setServiceAccountUser("vermasahil269@gmail.com")
+                .setServiceAccountUser("")
                 .setServiceAccountPrivateKeyFromP12File(key)
                 .build();
         Drive service = new Drive.Builder(httpTransport, jsonFactory, credential)
                 .setApplicationName("iskcongzb")
                 .build();
-
-      FileList files= service.files().list().execute();
-        System.out.println(files);
         return service;
     }
 
-    public boolean uploadFile(Seminar seminar,MultipartFile multipartFile) throws GeneralSecurityException, IOException {
+    public String uploadFile(Seminar seminar,MultipartFile multipartFile) throws GeneralSecurityException, IOException {
         String folderId = "1zAz4Rw792HvxWAnHmzP9kZMVwEnZ2hMc";
         File fileMetadata = new File();
         fileMetadata.setName("poster"+seminar.getTitle());
         fileMetadata.setParents(Collections.singletonList(folderId));
         File file = getDriveService().files().
-                create(fileMetadata, new InputStreamContent("",new ByteArrayInputStream(multipartFile.getBytes())))
+                 create(fileMetadata, new InputStreamContent("",new ByteArrayInputStream(multipartFile.getBytes())))
                 .setFields("id, parents")
                 .execute();
-//        File file = getDriveService().files().create(fileMetadata, mediaContent)
-//                .setFields("id, parents")
-//                .execute();
-        System.out.println("File ID: " + file.getId());
-        return true;
+        return "https://drive.google.com/uc?id="+file.getId();
     }
+
 
 
 
