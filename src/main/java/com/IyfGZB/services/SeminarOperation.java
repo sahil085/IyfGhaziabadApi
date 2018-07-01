@@ -5,7 +5,10 @@ import com.IyfGZB.CourseDTO.CommonResponseDTO;
 import com.IyfGZB.NotificationServices.SeminarNotificationService;
 import com.IyfGZB.controller.AccountController;
 import com.IyfGZB.domain.Seminar;
+import com.IyfGZB.domain.SeminarRecord;
 import com.IyfGZB.domain.UserInfo;
+import com.IyfGZB.dto.SeminarDto;
+import com.IyfGZB.repositories.SeminarRecordRepo;
 import com.IyfGZB.repositories.SeminarRepo;
 import com.IyfGZB.securityservices.CurrentUser;
 import org.slf4j.Logger;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +33,9 @@ public class SeminarOperation {
 
     @Autowired
     SeminarRepo seminarRepo;
+
+    @Autowired
+    SeminarRecordRepo seminarRecordRepo;
 
     public static final Logger logger = LoggerFactory.getLogger(SeminarOperation.class);
 
@@ -56,6 +63,25 @@ public class SeminarOperation {
       try{
           PageRequest pageRequest=new PageRequest(pageNumber,itemPerPage,Sort.Direction.DESC,"date");
           List<Seminar> seminars=seminarRepo.findAllByDateAfter(new Date(),pageRequest);
+          UserInfo userInfo=CurrentUser.getCurrentUser();
+//          List<SeminarDto> seminarDtoList=new ArrayList<>();
+//          seminars.forEach(seminar -> {
+//              SeminarDto seminarDto=new SeminarDto();
+//              if(!seminar.getCategory().equals("OTP")){
+//                if(seminar.getCategory().equals(userInfo.getVedicLevel()))
+//              }
+//          SeminarRecord seminarRecord =  seminarRecordRepo.findSeminarRecordBySeminarAndUser(seminar,userInfo);
+//          if(seminarRecord !=null){
+//              if(seminarRecord.getStatus().equals("Booked"))
+//              {
+//                    seminarDto.setBookingStatus(true);
+//                    seminarDto.setCategory(seminar.getCategory());
+//                    seminarDto.setTitle(seminar.getTitle());
+//                    seminarDto.setSpeakerName(seminar.getSpeakerName());
+//                    seminarDto.setThumbNailUrl(seminar.getThumbNailUrl());
+//              }
+//          }
+//          });
 //          seminars.forEach(seminar -> {
 //              String seminarStartTime=seminar.getStartTime();
 //              if(seminarStartTime != null ){

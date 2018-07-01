@@ -12,6 +12,7 @@ import java.util.List;
 public interface SeminarRepo extends JpaRepository<Seminar,Long> {
 
     List<Seminar> findAllByDateAfter(Date date, Pageable pageable);
+    Seminar findSeminarById(Long id);
 
 
 }

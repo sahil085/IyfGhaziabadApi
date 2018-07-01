@@ -1,8 +1,11 @@
 package com.IyfGZB.controller;
 
 
+import com.IyfGZB.CourseDTO.CommonResponseDTO;
 import com.IyfGZB.domain.Seminar;
+import com.IyfGZB.repositories.SeminarRecordRepo;
 import com.IyfGZB.services.SeminarOperation;
+import com.IyfGZB.services.SeminarRecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +17,13 @@ import java.util.List;
 @CrossOrigin
 public class SeminarController {
 
-    public static final Logger logger = LoggerFactory.getLogger(AdminSeminarController.class);
+    public static final Logger logger = LoggerFactory.getLogger(SeminarController.class);
 
     @Autowired
     private SeminarOperation seminarOperation;
+
+    @Autowired
+    private SeminarRecordService seminarRecordService;
 
     @GetMapping("/upcomingSeminars/{vedicLevel}/{pageNumber}/{itemPerPage}")
     public List<Seminar> getUpComingSeminars(@PathVariable("vedicLevel") Integer vediclevel,
@@ -25,6 +31,14 @@ public class SeminarController {
                                              @PathVariable("itemPerPage") Integer itemPerPage){
         return seminarOperation.getUpcomingSeminars(vediclevel,pageNumber,itemPerPage);
     }
+
+    @PostMapping("/bookSeatForSeminar/{seminarId}/{status}")
+    public CommonResponseDTO bookSeatForSeminar(@PathVariable("seminarId") Long seminarId,
+                                                @PathVariable("status") String status){
+       return seminarRecordService.bookSeatForSeminar(seminarId, status);
+
+    }
+
 
 
 }

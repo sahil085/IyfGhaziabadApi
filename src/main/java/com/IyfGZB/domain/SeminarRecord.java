@@ -17,6 +17,8 @@ public class SeminarRecord  {
 
     private UserInfo user;
 
+    private String response;
+
     private String status;
 
     public Long getId() {
@@ -41,6 +43,14 @@ public class SeminarRecord  {
 
     public void setUser(UserInfo user) {
         this.user = user;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
     }
 
     public String getStatus() {
