@@ -59,29 +59,53 @@ public class SeminarOperation {
 
         }
     }
-    public List<Seminar> getUpcomingSeminars(Integer vedicLevel,Integer pageNumber,Integer itemPerPage){
+    public List<SeminarDto> getUpcomingSeminars(Integer vedicLevel,Integer pageNumber,Integer itemPerPage){
       try{
           PageRequest pageRequest=new PageRequest(pageNumber,itemPerPage,Sort.Direction.DESC,"date");
           List<Seminar> seminars=seminarRepo.findAllByDateAfter(new Date(),pageRequest);
           UserInfo userInfo=CurrentUser.getCurrentUser();
-//          List<SeminarDto> seminarDtoList=new ArrayList<>();
-//          seminars.forEach(seminar -> {
-//              SeminarDto seminarDto=new SeminarDto();
+          List<SeminarDto> seminarDtoList=new ArrayList<>();
+          seminars.forEach(seminar -> {
+              SeminarDto seminarDto=new SeminarDto();
+              seminarDto.setBookingStatus(false);
+              seminarDto.setId(seminar.getId());
+                            seminarDto.setCategory(seminar.getCategory());
+                            seminarDto.setTitle(seminar.getTitle());
+                            seminarDto.setSpeakerName(seminar.getSpeakerName());
+                            seminarDto.setThumbNailUrl(seminar.getThumbNailUrl());
+                            seminarDtoList.add(seminarDto);
+
 //              if(!seminar.getCategory().equals("OTP")){
-//                if(seminar.getCategory().equals(userInfo.getVedicLevel()))
+//                if(seminar.getCategory().equals(userInfo.getVedicLevel())){
+//                    SeminarRecord seminarRecord =  seminarRecordRepo.findSeminarRecordBySeminarAndUser(seminar,userInfo);
+//                    if(seminarRecord !=null){
+//                        if(seminarRecord.getStatus().equals("Booked"))
+//                        {
+//                            seminarDto.setBookingStatus(true);
+//                            seminarDto.setCategory(seminar.getCategory());
+//                            seminarDto.setTitle(seminar.getTitle());
+//                            seminarDto.setSpeakerName(seminar.getSpeakerName());
+//                            seminarDto.setThumbNailUrl(seminar.getThumbNailUrl());
+//                            seminarDtoList.add(seminarDto);
+//                        }
+//                    }
+//                }
+//              }else{
+//                  SeminarRecord seminarRecord =  seminarRecordRepo.findSeminarRecordBySeminarAndUser(seminar,userInfo);
+//                  if(seminarRecord !=null){
+//                      if(seminarRecord.getStatus().equals("Booked"))
+//                      {
+//                          seminarDto.setBookingStatus(true);
+//                          seminarDto.setCategory(seminar.getCategory());
+//                          seminarDto.setTitle(seminar.getTitle());
+//                          seminarDto.setSpeakerName(seminar.getSpeakerName());
+//                          seminarDto.setThumbNailUrl(seminar.getThumbNailUrl());
+//                          seminarDtoList.add(seminarDto);
+//                      }
+//                  }
 //              }
-//          SeminarRecord seminarRecord =  seminarRecordRepo.findSeminarRecordBySeminarAndUser(seminar,userInfo);
-//          if(seminarRecord !=null){
-//              if(seminarRecord.getStatus().equals("Booked"))
-//              {
-//                    seminarDto.setBookingStatus(true);
-//                    seminarDto.setCategory(seminar.getCategory());
-//                    seminarDto.setTitle(seminar.getTitle());
-//                    seminarDto.setSpeakerName(seminar.getSpeakerName());
-//                    seminarDto.setThumbNailUrl(seminar.getThumbNailUrl());
-//              }
-//          }
-//          });
+
+          });
 //          seminars.forEach(seminar -> {
 //              String seminarStartTime=seminar.getStartTime();
 //              if(seminarStartTime != null ){
@@ -94,7 +118,7 @@ public class SeminarOperation {
 //          });
 
 //          seminars.forEach();
-          return seminars;
+          return seminarDtoList;
       }catch (Exception e){
          logger.error(e.getMessage());
          return null;

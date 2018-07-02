@@ -3,6 +3,7 @@ package com.IyfGZB.controller;
 
 import com.IyfGZB.CourseDTO.CommonResponseDTO;
 import com.IyfGZB.domain.Seminar;
+import com.IyfGZB.dto.SeminarDto;
 import com.IyfGZB.repositories.SeminarRecordRepo;
 import com.IyfGZB.services.SeminarOperation;
 import com.IyfGZB.services.SeminarRecordService;
@@ -26,15 +27,18 @@ public class SeminarController {
     private SeminarRecordService seminarRecordService;
 
     @GetMapping("/upcomingSeminars/{vedicLevel}/{pageNumber}/{itemPerPage}")
-    public List<Seminar> getUpComingSeminars(@PathVariable("vedicLevel") Integer vediclevel,
-                                             @PathVariable("pageNumber") Integer pageNumber,
-                                             @PathVariable("itemPerPage") Integer itemPerPage){
+    public List<SeminarDto> getUpComingSeminars(@PathVariable("vedicLevel") Integer vediclevel,
+                                                @PathVariable("pageNumber") Integer pageNumber,
+                                                @PathVariable("itemPerPage") Integer itemPerPage){
+
         return seminarOperation.getUpcomingSeminars(vediclevel,pageNumber,itemPerPage);
+
     }
 
     @PostMapping("/bookSeatForSeminar/{seminarId}/{status}")
     public CommonResponseDTO bookSeatForSeminar(@PathVariable("seminarId") Long seminarId,
                                                 @PathVariable("status") String status){
+
        return seminarRecordService.bookSeatForSeminar(seminarId, status);
 
     }
