@@ -43,6 +43,12 @@ public class SeminarController {
 
     }
 
+    @PutMapping("/cancelSeatForSeminar/{seminarRecordId}/{reason}")
+    public CommonResponseDTO cancelSeatForSeminar(@PathVariable("reason") String reason,
+                                                  @PathVariable("seminarRecordId") Long seminarRecordId){
+        return seminarRecordService.cancelseatForSeminar(seminarRecordId,reason);
+    }
+
 
 
 }

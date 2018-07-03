@@ -1,6 +1,7 @@
 package com.IyfGZB.services;
 
 import com.IyfGZB.CourseDTO.CommonResponseDTO;
+import com.IyfGZB.constants.SeminarConstant;
 import com.IyfGZB.controller.SeminarController;
 import com.IyfGZB.domain.Seminar;
 import com.IyfGZB.domain.SeminarRecord;
@@ -18,7 +19,7 @@ public class SeminarRecordService{
         public static final Logger logger = LoggerFactory.getLogger(SeminarRecordService.class);
 
 
-        @Autowired
+    @Autowired
     private SeminarRecordRepo seminarRecordRepo;
 
     @Autowired
@@ -31,7 +32,8 @@ public class SeminarRecordService{
             SeminarRecord seminarRecord= new SeminarRecord();
             seminarRecord.setSeminar(seminar);
             seminarRecord.setUser(userInfo);
-            seminarRecord.setStatus(status);
+            seminarRecord.setResponse(status);
+            seminarRecord.setStatus(SeminarConstant.STATUS_BOOKED);
             seminarRecordRepo.save(seminarRecord);
             return new CommonResponseDTO("success","Seat Booked Successfully");
 
@@ -40,5 +42,18 @@ public class SeminarRecordService{
             return new CommonResponseDTO("danger","OOPS..! Seat Booking Failed");
         }
 
+    }
+
+    public CommonResponseDTO cancelseatForSeminar(Long seminarRecordId, String reason){
+        try {
+            SeminarRecord seminarRecord=seminarRecordRepo.findSeminarRecordById(seminarRecordId);
+            seminarRecord.setResponse(reason);
+            seminarRecord.setStatus(SeminarConstant.STATUS_CANCELED);
+            seminarRecordRepo.save(seminarRecord);
+            return new CommonResponseDTO("success","Seat Cancelled Successfully");
+        }catch(Exception e){
+            logger.error(e.getMessage());
+            return new CommonResponseDTO("danger","OOPS..! Seat Cancelation Failed");
+        }
     }
 }

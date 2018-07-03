@@ -1,20 +1,19 @@
 package com.IyfGZB.domain;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class SeminarRecord  {
+public class SeminarRecord implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id ;
 
+    @OneToOne
     private Seminar seminar;
-
+    @OneToOne
     private UserInfo user;
 
     private String response;

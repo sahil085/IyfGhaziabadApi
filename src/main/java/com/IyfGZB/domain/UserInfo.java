@@ -18,6 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name="User_Info")
 @Scope("session")
+
 public  class UserInfo extends BaseModel implements Serializable,UserDetails {
 
     /**

@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface SeminarRecordRepo extends JpaRepository<SeminarRecord,Long> {
 
       SeminarRecord findSeminarRecordBySeminarAndUser(Seminar seminar, UserInfo userInfo);
+
+      SeminarRecord findSeminarRecordById(Long id);
 }

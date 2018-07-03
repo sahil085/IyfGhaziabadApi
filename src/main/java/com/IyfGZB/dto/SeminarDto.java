@@ -6,6 +6,8 @@ public class SeminarDto {
 
     private Long id ;
 
+    private Long seminarRecordId;
+
     private String title;
 
     private String venue;
@@ -38,6 +40,14 @@ public class SeminarDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getSeminarRecordId() {
+        return seminarRecordId;
+    }
+
+    public void setSeminarRecordId(Long seminarRecordId) {
+        this.seminarRecordId = seminarRecordId;
     }
 
     public String getTitle() {

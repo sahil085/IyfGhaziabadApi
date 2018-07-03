@@ -3,6 +3,7 @@ package com.IyfGZB.services;
 
 import com.IyfGZB.CourseDTO.CommonResponseDTO;
 import com.IyfGZB.NotificationServices.SeminarNotificationService;
+import com.IyfGZB.constants.SeminarConstant;
 import com.IyfGZB.controller.AccountController;
 import com.IyfGZB.domain.Seminar;
 import com.IyfGZB.domain.SeminarRecord;
@@ -67,43 +68,50 @@ public class SeminarOperation {
           List<SeminarDto> seminarDtoList=new ArrayList<>();
           seminars.forEach(seminar -> {
               SeminarDto seminarDto=new SeminarDto();
-              seminarDto.setBookingStatus(false);
+//              seminarDto.setBookingStatus(false);
               seminarDto.setId(seminar.getId());
-                            seminarDto.setCategory(seminar.getCategory());
-                            seminarDto.setTitle(seminar.getTitle());
-                            seminarDto.setSpeakerName(seminar.getSpeakerName());
-                            seminarDto.setThumbNailUrl(seminar.getThumbNailUrl());
-                            seminarDtoList.add(seminarDto);
-
-//              if(!seminar.getCategory().equals("OTP")){
-//                if(seminar.getCategory().equals(userInfo.getVedicLevel())){
-//                    SeminarRecord seminarRecord =  seminarRecordRepo.findSeminarRecordBySeminarAndUser(seminar,userInfo);
-//                    if(seminarRecord !=null){
-//                        if(seminarRecord.getStatus().equals("Booked"))
-//                        {
-//                            seminarDto.setBookingStatus(true);
 //                            seminarDto.setCategory(seminar.getCategory());
 //                            seminarDto.setTitle(seminar.getTitle());
 //                            seminarDto.setSpeakerName(seminar.getSpeakerName());
 //                            seminarDto.setThumbNailUrl(seminar.getThumbNailUrl());
 //                            seminarDtoList.add(seminarDto);
-//                        }
-//                    }
-//                }
-//              }else{
-//                  SeminarRecord seminarRecord =  seminarRecordRepo.findSeminarRecordBySeminarAndUser(seminar,userInfo);
-//                  if(seminarRecord !=null){
-//                      if(seminarRecord.getStatus().equals("Booked"))
-//                      {
-//                          seminarDto.setBookingStatus(true);
-//                          seminarDto.setCategory(seminar.getCategory());
-//                          seminarDto.setTitle(seminar.getTitle());
-//                          seminarDto.setSpeakerName(seminar.getSpeakerName());
-//                          seminarDto.setThumbNailUrl(seminar.getThumbNailUrl());
-//                          seminarDtoList.add(seminarDto);
-//                      }
-//                  }
-//              }
+              seminarDto.setCategory(seminar.getCategory());
+              seminarDto.setTitle(seminar.getTitle());
+              seminarDto.setSpeakerName(seminar.getSpeakerName());
+              seminarDto.setThumbNailUrl(seminar.getThumbNailUrl());
+
+              if(!seminar.getCategory().equals(SeminarConstant.OTP)){
+                if(Integer.parseInt(seminar.getCategory()) == (userInfo.getVedicLevel())){
+                    SeminarRecord seminarRecord =  seminarRecordRepo.findSeminarRecordBySeminarAndUser(seminar,userInfo);
+                    if(seminarRecord !=null){
+                        if(seminarRecord.getStatus().equals(SeminarConstant.STATUS_BOOKED))
+                        {
+                            seminarDto.setSeminarRecordId(seminarRecord.getId());
+                            seminarDto.setBookingStatus(true);
+
+                        }
+                        else {
+                            seminarDto.setSeminarRecordId(seminarRecord.getId());
+                            seminarDto.setBookingStatus(false);
+                        }
+                    }
+                    seminarDtoList.add(seminarDto);
+                }
+              }else{
+                  SeminarRecord seminarRecord =  seminarRecordRepo.findSeminarRecordBySeminarAndUser(seminar,userInfo);
+                  if(seminarRecord !=null){
+                      if(seminarRecord.getStatus().equals(SeminarConstant.STATUS_BOOKED))
+                      {
+                          seminarDto.setSeminarRecordId(seminarRecord.getId());
+                          seminarDto.setBookingStatus(true);
+                      }
+                      else {
+                          seminarDto.setSeminarRecordId(seminarRecord.getId());
+                          seminarDto.setBookingStatus(false);
+                      }
+                  }
+                  seminarDtoList.add(seminarDto);
+              }
 
           });
 //          seminars.forEach(seminar -> {
