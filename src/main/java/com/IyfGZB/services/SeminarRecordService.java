@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SeminarRecordService{
@@ -25,10 +26,12 @@ public class SeminarRecordService{
     @Autowired
     private SeminarRepo seminarRepo;
 
+    @Transactional
     public CommonResponseDTO bookSeatForSeminar(Long seminarId, String status){
         try{
             Seminar seminar=seminarRepo.findSeminarById(seminarId);
             UserInfo userInfo= CurrentUser.getCurrentUser();
+            seminarRecordRepo.deleteSeminarRecordBySeminarAndUser(seminar,userInfo);
             SeminarRecord seminarRecord= new SeminarRecord();
             seminarRecord.setSeminar(seminar);
             seminarRecord.setUser(userInfo);
