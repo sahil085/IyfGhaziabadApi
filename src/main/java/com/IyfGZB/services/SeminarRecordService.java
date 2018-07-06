@@ -59,4 +59,6 @@ public class SeminarRecordService{
             return new CommonResponseDTO("danger","OOPS..! Seat Cancelation Failed");
         }
     }
+
+
 }

@@ -24,6 +24,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -60,7 +61,7 @@ public class SeminarOperation {
 
         }
     }
-    public List<SeminarDto> getUpcomingSeminars(Integer vedicLevel,Integer pageNumber,Integer itemPerPage){
+    public HashMap<String,Object> getUpcomingSeminars(Integer vedicLevel, Integer pageNumber, Integer itemPerPage){
       try{
           PageRequest pageRequest=new PageRequest(pageNumber,itemPerPage,Sort.Direction.DESC,"date");
           List<Seminar> seminars=seminarRepo.findAllByDateAfter(new Date(),pageRequest);
@@ -126,7 +127,13 @@ public class SeminarOperation {
 //          });
 
 //          seminars.forEach();
-          return seminarDtoList;
+
+          HashMap<String,Object> hashMap=new HashMap<>();
+          hashMap.put("upcomingSeminar",seminarDtoList);
+          Integer totalPages=seminarDtoList.size()/itemPerPage;
+          hashMap.put("totalPages",totalPages);
+
+          return hashMap;
       }catch (Exception e){
          logger.error(e.getMessage());
          return null;
@@ -134,6 +141,17 @@ public class SeminarOperation {
 
 
     }
+
+//    public Integer getTotalNumberOfPages(Integer itemPerPage){
+//        try{
+//           SeminarOperation seminarOperation=new SeminarOperation();
+//           seminarOperation.getUpcomingSeminars()
+//
+//        }catch (Exception e){
+//            logger.error(e.getMessage());
+//            return 0;
+//        }
+//    }
 
 
 
