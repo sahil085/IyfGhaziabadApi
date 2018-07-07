@@ -1,53 +1,22 @@
-package com.IyfGZB.domain;
+package com.IyfGZB.dto;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-public class Seminar  implements Serializable {
+public class SeminarDto {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id ;
 
-    @Column(nullable = false)
+    private Long seminarRecordId;
+
     private String title;
-    @Column(nullable = false)
 
     private String venue;
 
-    @Column(nullable = false)
-
     private String startTime;
-    @Column(nullable = false)
 
     private String endTime;
 
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-
     private Date date;
-
-
-    @Column(name = "CREATED_BY",nullable = false)
-    private String createdBy;
-
-    @Column(name = "MODIFIED_BY",nullable = false)
-    private String modifiedBy;
-
-    @Column(name = "DATE_CREATED",nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
-
-    @Column(name = "DATE_MODIFIED",nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modifiedDate;
-
 
     private String speakerName;
 
@@ -63,37 +32,7 @@ public class Seminar  implements Serializable {
 
     private String thumbNailUrl;
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
+    private Boolean bookingStatus;
 
     public Long getId() {
         return id;
@@ -101,6 +40,14 @@ public class Seminar  implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getSeminarRecordId() {
+        return seminarRecordId;
+    }
+
+    public void setSeminarRecordId(Long seminarRecordId) {
+        this.seminarRecordId = seminarRecordId;
     }
 
     public String getTitle() {
@@ -199,26 +146,11 @@ public class Seminar  implements Serializable {
         this.thumbNailUrl = thumbNailUrl;
     }
 
-    @Override
-    public String toString() {
-        return "Seminar{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", venue='" + venue + '\'' +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", date=" + date +
-                ", createdBy='" + createdBy + '\'' +
-                ", modifiedBy='" + modifiedBy + '\'' +
-                ", createdDate=" + createdDate +
-                ", modifiedDate=" + modifiedDate +
-                ", speakerName='" + speakerName + '\'' +
-                ", speakerDescription='" + speakerDescription + '\'' +
-                ", seminarDescription='" + seminarDescription + '\'' +
-                ", category='" + category + '\'' +
-                ", totalNumberOfAvailableSeats=" + totalNumberOfAvailableSeats +
-                ", totalNumberOfSeats=" + totalNumberOfSeats +
-                ", thumbNailUrl='" + thumbNailUrl + '\'' +
-                '}';
+    public Boolean getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public void setBookingStatus(Boolean bookingStatus) {
+        this.bookingStatus = bookingStatus;
     }
 }
