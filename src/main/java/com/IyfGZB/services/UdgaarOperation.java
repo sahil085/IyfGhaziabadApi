@@ -20,14 +20,15 @@ public class UdgaarOperation {
     public String udgaarRegistration(String payMode){
         try{
             UserInfo userInfo=CurrentUser.getCurrentUser();
-            if(udgaarRepo.findByUserInfo(userInfo)==null) {
-                Udgaar udgaar = new Udgaar();
-                udgaar.setPayMode(payMode);
-                udgaar.setUserInfo(userInfo);
+
+            Udgaar udgaar=  udgaarRepo.findByUserInfo(userInfo);
+            if(udgaar==null) {
+                Udgaar udgaar1 = new Udgaar();
+                udgaar1.setPayMode(payMode);
+                udgaar1.setUserInfo(userInfo);
                 udgaarRepo.saveAndFlush(udgaar);
                 return "User Registered Successfully For UDGAAR : " + payMode;
             }else{
-                Udgaar udgaar = udgaarRepo.findByUserInfo(userInfo);
                 udgaar.setPayMode(payMode);
                 udgaarRepo.saveAndFlush(udgaar);
                 return "Paymode of the user changed to "+payMode;
