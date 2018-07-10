@@ -34,9 +34,12 @@ public class UserRoleMappingService {
             PageRequest pageRequest=new PageRequest(pageIndex,userPerPage,Sort.Direction.ASC,"username");
 
             Page<UserInfo> userInfos=userInfoRepository.findAll(pageRequest);
+            int sNo=1;
            List<UserDto> userDtoList = new ArrayList<>();
            userInfos.forEach(userInfo -> {
                UserDto userDto=new UserDto();
+
+               userDto.setUserId(userInfo.getId());
                userDto.setEmail(userInfo.getEmail());
                userDto.setMobileNumber(userInfo.getMobileNumber());
                Set<Role> roles=userInfo.getRoles();

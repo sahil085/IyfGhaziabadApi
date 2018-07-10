@@ -6,11 +6,28 @@ import java.util.Set;
 
 public class UserDto {
 
+    private Integer sNo;
+    private Long UserId;
     private String role;
     private String userName;
     private String email;
     private Long mobileNumber;
 
+    public Integer getsNo() {
+        return sNo;
+    }
+
+    public void setsNo(Integer sNo) {
+        this.sNo = sNo;
+    }
+
+    public Long getUserId() {
+        return UserId;
+    }
+
+    public void setUserId(Long userId) {
+        UserId = userId;
+    }
 
     public String getRole() {
         return role;

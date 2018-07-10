@@ -65,6 +65,7 @@ public class SeminarOperation {
       try{
           PageRequest pageRequest=new PageRequest(pageNumber,itemPerPage,Sort.Direction.DESC,"date");
           List<Seminar> seminars=seminarRepo.findAllByDateAfter(new Date(),pageRequest);
+          Integer totalPage=seminarRepo.findAllByDateAfter(new Date()).size();
           UserInfo userInfo=CurrentUser.getCurrentUser();
           List<SeminarDto> seminarDtoList=new ArrayList<>();
           seminars.forEach(seminar -> {
@@ -130,8 +131,7 @@ public class SeminarOperation {
 
           HashMap<String,Object> hashMap=new HashMap<>();
           hashMap.put("upcomingSeminar",seminarDtoList);
-          Integer totalPages=seminarDtoList.size()/itemPerPage;
-          hashMap.put("totalPages",totalPages);
+          hashMap.put("totalPages",(itemPerPage + totalPage -1)/itemPerPage);
 
           return hashMap;
       }catch (Exception e){
