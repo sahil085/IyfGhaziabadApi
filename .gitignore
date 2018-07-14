@@ -1,6 +1,7 @@
 dumps
 /out
 /build
+/.gradle
 .gradle
 /classes
 /test
