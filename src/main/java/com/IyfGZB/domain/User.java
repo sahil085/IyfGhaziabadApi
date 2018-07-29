@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
  */
 @Entity
 @Table(name="User")
-@Scope("session")
+
 public  class User implements UserDetails{
     public static enum Role{ USER }
     /**

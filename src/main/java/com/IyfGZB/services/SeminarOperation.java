@@ -64,7 +64,7 @@ public class SeminarOperation {
     public HashMap<String,Object> getUpcomingSeminars(Integer vedicLevel, Integer pageNumber, Integer itemPerPage){
       try{
           PageRequest pageRequest=new PageRequest(pageNumber,itemPerPage,Sort.Direction.DESC,"date");
-          List<Seminar> seminars=seminarRepo.findAllByDateAfter(new Date(),pageRequest);
+              List<Seminar> seminars=seminarRepo.findAllByDateAfter(new Date(),pageRequest);
           Integer totalPage=seminarRepo.findAllByDateAfter(new Date()).size();
           UserInfo userInfo=CurrentUser.getCurrentUser();
           List<SeminarDto> seminarDtoList=new ArrayList<>();

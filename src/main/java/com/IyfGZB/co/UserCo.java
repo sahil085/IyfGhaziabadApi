@@ -1,10 +1,6 @@
-package com.IyfGZB.userdto;
+package com.IyfGZB.co;
 
-import com.IyfGZB.domain.Role;
-
-import java.util.Set;
-
-public class UserDto {
+public class UserCo {
 
     private Integer sNo;
     private Long UserId;

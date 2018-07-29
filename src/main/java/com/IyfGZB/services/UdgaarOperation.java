@@ -22,11 +22,11 @@ public class UdgaarOperation {
             UserInfo userInfo=CurrentUser.getCurrentUser();
 
             Udgaar udgaar=  udgaarRepo.findByUserInfo(userInfo);
-            if(udgaar==null) {
+            if(udgaar == null) {
                 Udgaar udgaar1 = new Udgaar();
                 udgaar1.setPayMode(payMode);
                 udgaar1.setUserInfo(userInfo);
-                udgaarRepo.saveAndFlush(udgaar);
+                udgaarRepo.saveAndFlush(udgaar1);
                 return "User Registered Successfully For UDGAAR : " + payMode;
             }else{
                 udgaar.setPayMode(payMode);

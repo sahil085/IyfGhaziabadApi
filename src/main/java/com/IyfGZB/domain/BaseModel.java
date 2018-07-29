@@ -59,7 +59,7 @@ public class BaseModel {
 
     @PrePersist
     void onCreate() {
-        String currentUser = getCurrentUser();
+        String currentUser = getCurrentUser().getUsername();
         Date date = new Date();
         this.setCreatedBy(currentUser);
         this.setCreatedDate(date);
@@ -69,15 +69,15 @@ public class BaseModel {
 
     @PreUpdate
     void onPersist() {
-        this.setModifiedBy(getCurrentUser());
+        this.setModifiedBy(getCurrentUser().getUsername());
         this.setModifiedDate(new Date());
     }
 
-    private String getCurrentUser() {
+    private UserInfo getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             try {
-                return (String) authentication.getPrincipal();
+                return (UserInfo) authentication.getPrincipal();
             } catch (NullPointerException npe) {
                 return null;
             }
