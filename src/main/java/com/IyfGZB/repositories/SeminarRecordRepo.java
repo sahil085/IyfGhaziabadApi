@@ -6,12 +6,16 @@ import com.IyfGZB.domain.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface SeminarRecordRepo extends JpaRepository<SeminarRecord,Long> {
 
       SeminarRecord findSeminarRecordBySeminarAndUser(Seminar seminar, UserInfo userInfo);
 
       SeminarRecord findSeminarRecordById(Long id);
+
+      List<SeminarRecord> findAllByBySeminar(Seminar seminar);
 
       void deleteSeminarRecordBySeminarAndUser(Seminar seminar,UserInfo userInfo);
 }

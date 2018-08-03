@@ -9,6 +9,7 @@ import com.IyfGZB.domain.Seminar;
 import com.IyfGZB.domain.SeminarRecord;
 import com.IyfGZB.domain.UserInfo;
 import com.IyfGZB.dto.SeminarDto;
+import com.IyfGZB.dto.SeminarRecordDTO;
 import com.IyfGZB.repositories.SeminarRecordRepo;
 import com.IyfGZB.repositories.SeminarRepo;
 import com.IyfGZB.securityservices.CurrentUser;
@@ -20,12 +21,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SeminarOperation {
@@ -141,6 +140,78 @@ public class SeminarOperation {
 
 
     }
+
+    public CommonResponseDTO updateSeminar(Seminar seminar){
+
+        try{
+            Seminar seminar1 = seminarRepo.findSeminarById(seminar.getId());
+
+            seminar1.setCategory(seminar.getCategory());
+            seminar1.setDate(seminar.getDate());
+            seminar1.setEndTime(seminar.getEndTime());
+            seminar1.setStartTime(seminar.getStartTime());
+            seminar1.setModifiedBy(CurrentUser.getCurrentUser().getUsername());
+            seminar1.setSeminarDescription(seminar.getSeminarDescription());
+            seminar1.setTitle(seminar.getTitle());
+            seminar1.setThumbNailUrl(seminar.getThumbNailUrl());
+            seminar1.setSpeakerName(seminar.getSpeakerName());
+            seminar1.setVenue(seminar.getVenue());
+            seminar1.setTotalNumberOfSeats(seminar.getTotalNumberOfSeats());
+            notificationService.sendUpdationEmail(seminar);
+
+            return new CommonResponseDTO("success","Seminar updated successfully");
+
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            return new CommonResponseDTO("danger","Some error occured while updating seminar");
+        }
+
+    }
+
+
+    public List<Seminar> getAllUpcomingSeminars(){
+
+        try{
+            return seminarRepo.findAllByDateAfter(new Date());
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    public SeminarRecordDTO getSeminar(Long seminarId){
+        try{
+          Seminar seminar =  seminarRepo.findSeminarById(seminarId);
+          List<SeminarRecord> seminarRecord = seminarRecordRepo.findAllByBySeminar(seminar);
+          List<SeminarRecord> seminarRecordList = new ArrayList<>();
+          Long count = 0l;
+          Long totalSeats=seminar.getTotalNumberOfSeats();
+          Iterator<SeminarRecord> seminarRecords = seminarRecord.iterator();
+          while (seminarRecords.hasNext()){
+              SeminarRecord seminarRecord1 = seminarRecords.next();
+              if(seminarRecord1.getStatus().equals(SeminarConstant.STATUS_BOOKED)){
+                  count++;
+              }
+              seminarRecordList.add(seminarRecord1);
+          }
+            SeminarRecordDTO seminarRecordDTO = new SeminarRecordDTO();
+            seminar.setTotalNumberOfAvailableSeats(totalSeats - count);
+            seminarRecordDTO.setSeminar(seminar);
+            seminarRecordDTO.setSeminarRecord(seminarRecordList);
+
+            return seminarRecordDTO;
+
+
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            return null;
+        }
+    }
+
+//    public CommonResponseDTO deleteSeminar(Long seminarId){
+//
+//
+//
+//    }
 
 //    public Integer getTotalNumberOfPages(Integer itemPerPage){
 //        try{

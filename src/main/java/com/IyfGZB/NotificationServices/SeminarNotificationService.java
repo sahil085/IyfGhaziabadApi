@@ -36,11 +36,48 @@ public class SeminarNotificationService {
    @Value("${seminar.subject}")
    private String subject;
 
+   @Value("${seminar.actionlink}")
+   private String actionLink;
+
+   @Value("${seminar.updation.subject}")
+   private String seminarUpdateSubject;
+
    @Autowired
    private UserInfoOperation userInfoOperation;
 
     @Async
     public void sendEmail(Seminar seminar) throws MessagingException {
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("title", seminar.getTitle());
+        model.put("speakerName",seminar.getSpeakerName());
+        model.put("startTime",seminar.getStartTime());
+        model.put("venue",seminar.getVenue());
+        model.put("endTime",seminar.getEndTime());
+        model.put("date",DateUtil.toDate(seminar.getDate()));
+        model.put("day",DateUtil.getDateInString(seminar.getDate()));
+        model.put("speakerDesc",seminar.getSpeakerDescription());
+        model.put("seminarDesc",seminar.getSeminarDescription());
+        model.put("actionLink",actionLink);
+        String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/template/seminarEmailTemplte", "UTF-8", model);
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+       List<String> list= userInfoOperation.getallEmails();
+
+//        mimeMessageHelper.setFrom(new InternetAddress("vermasahil269@gmail.com"));
+        mimeMessageHelper.setTo(list.toArray(new String[list.size()]));
+        mimeMessageHelper.setSubject(subject);
+        mimeMessageHelper.setText(text, true);
+
+        javaMailSender.send(mimeMessage);
+
+
+    }
+
+    @Async
+    public void sendUpdationEmail(Seminar seminar) throws MessagingException {
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("title", seminar.getTitle());
@@ -59,11 +96,11 @@ public class SeminarNotificationService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-       List<String> list= userInfoOperation.getallEmails();
+        List<String> list= userInfoOperation.getallEmails();
 
 //        mimeMessageHelper.setFrom(new InternetAddress("vermasahil269@gmail.com"));
         mimeMessageHelper.setTo(list.toArray(new String[list.size()]));
-        mimeMessageHelper.setSubject(subject);
+        mimeMessageHelper.setSubject(seminarUpdateSubject);
         mimeMessageHelper.setText(text, true);
 
         javaMailSender.send(mimeMessage);

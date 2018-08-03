@@ -11,11 +11,17 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,10 +31,30 @@ import java.util.List;
 public class GoogleDriveService {
 
 
+
     public  Drive getDriveService() throws GeneralSecurityException,
             IOException {
-
+        InputStream input = new URL("http://github.com/sahil085/IyfGhaziabadApi/blob/JuneQa/Iskcongzb-0f45852524c6.p12").openStream();
+        URL url = new URL("http://github.com/sahil085/IyfGhaziabadApi/blob/JuneQa/Iskcongzb-0f45852524c6.p12");
         java.io.File key = new java.io.File("Iskcongzb-0f45852524c6.p12");
+
+          if(!key.exists()){
+              OutputStream out=new FileOutputStream(key);
+              byte[] buf=new byte[1024];
+              int len;
+              while((len=input.read(buf))>0)
+                  out.write(buf,0,len);
+              out.close();
+              input.close();
+            }
+
+
+//        java.io.File key = null;
+//        try {
+//            key = Paths.get(url.toURI()).toFile();
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
         System.out.println(key.getAbsolutePath());
         HttpTransport httpTransport = new NetHttpTransport();
         JacksonFactory jsonFactory = new JacksonFactory();
