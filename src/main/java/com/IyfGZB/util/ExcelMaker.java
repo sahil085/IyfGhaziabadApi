@@ -1,16 +1,14 @@
 package com.IyfGZB.util;
 
 import com.IyfGZB.domain.Seminar;
+import com.IyfGZB.domain.SeminarAttendance;
 import com.IyfGZB.domain.SeminarRecord;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -21,13 +19,13 @@ import java.util.List;
 public class ExcelMaker {
 
 
-    public void makeAttendanceSheet(Seminar seminar, List<SeminarRecord> seminarRecords){
+    public void makeAttendanceSheet(Seminar seminar, List<SeminarAttendance> seminarAttendances){
 
-        SimpleDateFormat simpleDateFormat= new SimpleDateFormat("DD-MM-YYYY");
+        SimpleDateFormat simpleDateFormat= new SimpleDateFormat("dd-MM-yyyy");
         String date =   simpleDateFormat.format(seminar.getDate());
 
-        String[] columns = {seminar.getTitle(), seminar.getSpeakerName(),
-                date, };
+        String[] columns = {"Seminar Title", "Speaker Name",
+                "Date","Class Level","User Name","Status" };
         // Create a Workbook
         Workbook workbook = new HSSFWorkbook(); // new HSSFWorkbook() for generating `.xls` file
 
@@ -36,7 +34,7 @@ public class ExcelMaker {
         CreationHelper createHelper = workbook.getCreationHelper();
 
         // Create a Sheet
-        Sheet sheet = workbook.createSheet("Employee");
+        Sheet sheet = workbook.createSheet(seminar.getTitle()+" - "+date);
 
         // Create a Font for styling header cells
         Font headerFont = workbook.createFont();
@@ -53,7 +51,7 @@ public class ExcelMaker {
 
         // Create cells
 
-        for(int i = 0; i < 6; i++) {
+        for(int i = 0; i < columns.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(columns[i]);
             cell.setCellStyle(headerCellStyle);
@@ -65,21 +63,26 @@ public class ExcelMaker {
 
         // Create Other rows and cells with employees data
         int rowNum = 1;
-        for(Employee employee: employees) {
+        for(SeminarAttendance record: seminarAttendances) {
             Row row = sheet.createRow(rowNum++);
 
             row.createCell(0)
-                    .setCellValue(employee.getName());
+                    .setCellValue(record.getSeminar().getTitle());
 
             row.createCell(1)
-                    .setCellValue(employee.getEmail());
+                    .setCellValue(record.getSeminar().getSpeakerName());
 
             Cell dateOfBirthCell = row.createCell(2);
-            dateOfBirthCell.setCellValue(employee.getDateOfBirth());
+            dateOfBirthCell.setCellValue(record.getSeminar().getDate());
             dateOfBirthCell.setCellStyle(dateCellStyle);
 
             row.createCell(3)
-                    .setCellValue(employee.getSalary());
+                    .setCellValue(record.getSeminar().getCategory());
+
+            row.createCell(4)
+                    .setCellValue(record.getUser().getUsername());
+            row.createCell(5)
+                    .setCellValue(record.getAttendanceStatus());
         }
 
         // Resize all columns to fit the content size
@@ -88,19 +91,17 @@ public class ExcelMaker {
         }
 
         // Write the output to a file
-        FileOutputStream fileOut = null;
+        ByteArrayOutputStream fileOut = null;
+            fileOut = new ByteArrayOutputStream();
         try {
-            fileOut = new FileOutputStream("poi-generated-file.xlsx");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
+
             workbook.write(fileOut);
-            fileOut.close();
+            fileOut.
             workbook.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
 
         // Closing the workbook

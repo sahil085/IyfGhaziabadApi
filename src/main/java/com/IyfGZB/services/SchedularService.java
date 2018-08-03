@@ -1,6 +1,7 @@
 package com.IyfGZB.services;
 
 import com.IyfGZB.domain.Seminar;
+import com.IyfGZB.domain.SeminarAttendance;
 import com.IyfGZB.domain.SeminarRecord;
 import com.IyfGZB.repositories.SeminarAttendanceRepo;
 import com.IyfGZB.repositories.SeminarRecordRepo;
@@ -39,8 +40,8 @@ public class SchedularService {
         List<Seminar> seminarList = seminarRepo.findAllByDate(new Date());
 
         seminarList.forEach( seminar -> {
-            List<SeminarRecord> seminarRecordList = seminarRecordRepo.findAllByBySeminar(seminar);
-            excelMaker.makeAttendanceSheet(seminar,seminarRecordList);
+            List<SeminarAttendance> seminarAttendances= seminarAttendanceRepo.findAllBySeminar(seminar);
+            excelMaker.makeAttendanceSheet(seminar,seminarAttendances);
         });
 
 
