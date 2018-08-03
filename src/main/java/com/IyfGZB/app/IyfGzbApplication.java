@@ -24,7 +24,6 @@ import java.util.Properties;
 @SpringBootApplication
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true,jsr250Enabled = true)
-@EnableAsync
 public class IyfGzbApplication {
 	@Bean
 	public VelocityEngine getVelocityEngine() throws VelocityException, IOException {
