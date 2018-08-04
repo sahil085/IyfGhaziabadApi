@@ -84,13 +84,13 @@ public class GoogleDriveService {
         return "https://drive.google.com/uc?id="+file.getId();
     }
 
-    public String uploadAttendanceExcelSheet() throws GeneralSecurityException, IOException {
+    public String uploadAttendanceExcelSheet(String fileName,byte[] fileData) throws GeneralSecurityException, IOException {
         String folderId = "1zAz4Rw792HvxWAnHmzP9kZMVwEnZ2hMc";
         File fileMetadata = new File();
-        fileMetadata.setName("poster"+seminar.getTitle());
+        fileMetadata.setName(fileName);
         fileMetadata.setParents(Collections.singletonList(folderId));
         File file = getDriveService().files().
-                create(fileMetadata, new InputStreamContent("",new ByteArrayInputStream(multipartFile.getBytes())))
+                create(fileMetadata, new InputStreamContent("",new ByteArrayInputStream(fileData)))
                 .setFields("id, parents")
                 .execute();
         return "https://drive.google.com/uc?id="+file.getId();

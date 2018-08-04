@@ -6,6 +6,7 @@ import com.IyfGZB.domain.SeminarRecord;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.WorkbookUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -18,14 +19,17 @@ import java.util.List;
 @Service
 public class ExcelMaker {
 
+    @Autowired
+    GoogleDriveService driveService;
 
-    public void makeAttendanceSheet(Seminar seminar, List<SeminarAttendance> seminarAttendances){
 
-        SimpleDateFormat simpleDateFormat= new SimpleDateFormat("dd-MM-yyyy");
-        String date =   simpleDateFormat.format(seminar.getDate());
+    public void makeAttendanceSheet(Seminar seminar, List<SeminarAttendance> seminarAttendances) {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String date = simpleDateFormat.format(seminar.getDate());
 
         String[] columns = {"Seminar Title", "Speaker Name",
-                "Date","Class Level","User Name","Status" };
+                "Date", "Class Level", "User Name", "Status"};
         // Create a Workbook
         Workbook workbook = new HSSFWorkbook(); // new HSSFWorkbook() for generating `.xls` file
 
@@ -34,7 +38,7 @@ public class ExcelMaker {
         CreationHelper createHelper = workbook.getCreationHelper();
 
         // Create a Sheet
-        Sheet sheet = workbook.createSheet(seminar.getTitle()+" - "+date);
+        Sheet sheet = workbook.createSheet(seminar.getTitle() + " - " + date);
 
         // Create a Font for styling header cells
         Font headerFont = workbook.createFont();
@@ -51,7 +55,7 @@ public class ExcelMaker {
 
         // Create cells
 
-        for(int i = 0; i < columns.length; i++) {
+        for (int i = 0; i < columns.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(columns[i]);
             cell.setCellStyle(headerCellStyle);
@@ -63,7 +67,7 @@ public class ExcelMaker {
 
         // Create Other rows and cells with employees data
         int rowNum = 1;
-        for(SeminarAttendance record: seminarAttendances) {
+        for (SeminarAttendance record : seminarAttendances) {
             Row row = sheet.createRow(rowNum++);
 
             row.createCell(0)
@@ -86,26 +90,26 @@ public class ExcelMaker {
         }
 
         // Resize all columns to fit the content size
-        for(int i = 0; i < columns.length; i++) {
+        for (int i = 0; i < columns.length; i++) {
             sheet.autoSizeColumn(i);
         }
 
         // Write the output to a file
         ByteArrayOutputStream fileOut = null;
-            fileOut = new ByteArrayOutputStream();
+        fileOut = new ByteArrayOutputStream();
         try {
 
             workbook.write(fileOut);
-            fileOut.
             workbook.close();
+            driveService.uploadAttendanceExcelSheet(sheet.getSheetName(),fileOut.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
 
 
-        // Closing the workbook
 
+        // Closing the workbook
 
 
 //    In the above program, we first created a workbook using the XSSFWorkbook class. Then we created a Sheet named “Employee”. Once we got a Sheet, we created the header row and columns. The header cells were styled using a different font.
@@ -152,6 +156,5 @@ public class ExcelMaker {
 //        workbook.close();
 
 
-
-
+    }
 }
