@@ -12,6 +12,7 @@ import com.google.api.services.drive.model.Permission;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.*;
+import org.apache.poi.ss.usermodel.Cell;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -81,6 +82,8 @@ public class GoogleSheetService {
         Spreadsheet spreadsheet = new Spreadsheet()
                 .setProperties(new SpreadsheetProperties()
                         .setTitle(title));
+        CellFormat cellFormat= new CellFormat();
+        cellFormat.setHorizontalAlignment("CENTER");
         spreadsheet = service.spreadsheets().create(spreadsheet)
                 .setFields("spreadsheetId")
                 .execute();
@@ -123,21 +126,132 @@ public class GoogleSheetService {
             data.add(new ValueRange()
                     .setRange("A2")
                     .setValues(writeData));
-            data.add(new ValueRange()
-                    .setRange("A1")
-                    .setValues(Arrays.asList(
-                            Arrays.asList("<center><b>Title</b></center>",
-                                    "<center><b>Speaker Name</b></center>",
-                                    "<center><b>User Name</b></center>",
-                                    "<center><b>status</b></center>"))));
 //
             BatchUpdateValuesRequest batchBody = new BatchUpdateValuesRequest()
                     .setValueInputOption("RAW")
                     .setData(data);
-//
-            BatchUpdateValuesResponse batchResult = this.sheetService.spreadsheets().values()
+
+
+    List<Request> requests = new ArrayList<>();
+    requests.add(new Request().setUpdateDimensionProperties(
+            new UpdateDimensionPropertiesRequest()
+                    .setRange(
+                            new DimensionRange()
+                                    .setDimension("COLUMNS")
+                                    .setStartIndex(0).setEndIndex(4)
+                    )
+
+                    .setProperties(new DimensionProperties().setPixelSize(250)).setFields("pixelSize")));
+
+            requests.add(new Request()
+                    .setRepeatCell(new RepeatCellRequest()
+                            .setCell(new CellData()
+                                    .setUserEnteredValue( new ExtendedValue().setStringValue("Seminar Title"))
+                                    .setUserEnteredFormat(new CellFormat()
+                                            .setBackgroundColor(new Color()
+                                                    .setRed(Float.valueOf("1"))
+                                                    .setGreen(Float.valueOf("0"))
+                                                    .setBlue(Float.valueOf("0"))
+                                            ).setHorizontalAlignment("CENTER")
+                                            .setTextFormat(new TextFormat()
+                                                    .setFontSize(15)
+                                                    .setBold(Boolean.TRUE)
+                                            )
+                                    )
+                            )
+                            .setRange(new GridRange()
+                                    .setStartRowIndex(0)
+                                    .setEndRowIndex(1)
+                                    .setStartColumnIndex(0)
+                                    .setEndColumnIndex(1)
+                            )
+                            .setFields("*")
+                    )
+            );
+            requests.add(new Request()
+                    .setRepeatCell(new RepeatCellRequest()
+                            .setCell(new CellData()
+                                    .setUserEnteredValue( new ExtendedValue().setStringValue("Speaker Name"))
+                                    .setUserEnteredFormat(new CellFormat()
+                                            .setBackgroundColor(new Color()
+                                                    .setRed(Float.valueOf("1"))
+                                                    .setGreen(Float.valueOf("0"))
+                                                    .setBlue(Float.valueOf("0"))
+                                            ).setHorizontalAlignment("CENTER")
+                                            .setTextFormat(new TextFormat()
+                                                    .setFontSize(15)
+                                                    .setBold(Boolean.TRUE)
+                                            )
+                                    )
+                            )
+                            .setRange(new GridRange()
+
+                                    .setStartRowIndex(0)
+                                    .setEndRowIndex(1)
+                                    .setStartColumnIndex(1)
+                                    .setEndColumnIndex(2)
+                            )
+                            .setFields("*")
+                    )
+            );
+            requests.add(new Request()
+                    .setRepeatCell(new RepeatCellRequest()
+                            .setCell(new CellData()
+                                    .setUserEnteredValue( new ExtendedValue().setStringValue("User Name"))
+                                    .setUserEnteredFormat(new CellFormat()
+                                            .setBackgroundColor(new Color()
+                                                    .setRed(Float.valueOf("1"))
+                                                    .setGreen(Float.valueOf("0"))
+                                                    .setBlue(Float.valueOf("0"))
+                                            ).setHorizontalAlignment("CENTER")
+                                            .setTextFormat(new TextFormat()
+                                                    .setFontSize(15)
+                                                    .setBold(Boolean.TRUE)
+                                            )
+                                    )
+                            )
+                            .setRange(new GridRange()
+                                    .setStartRowIndex(0)
+                                    .setEndRowIndex(1)
+                                    .setStartColumnIndex(2)
+                                    .setEndColumnIndex(3)
+                            )
+                            .setFields("*")
+                    )
+            );
+            requests.add(new Request()
+                    .setRepeatCell(new RepeatCellRequest()
+                            .setCell(new CellData()
+                                    .setUserEnteredValue( new ExtendedValue().setStringValue("Attendance Status"))
+                                    .setUserEnteredFormat(new CellFormat()
+                                            .setBackgroundColor(new Color()
+                                                    .setRed(Float.valueOf("1"))
+                                                    .setGreen(Float.valueOf("0"))
+                                                    .setBlue(Float.valueOf("0"))
+
+                                            ).setHorizontalAlignment("CENTER")
+                                            .setTextFormat(new TextFormat()
+                                                    .setFontSize(15)
+                                                    .setBold(Boolean.TRUE)
+                                            )
+                                    )
+                            )
+                            .setRange(new GridRange()
+                                    .setStartRowIndex(0)
+                                    .setEndRowIndex(1)
+                                    .setStartColumnIndex(3)
+                                    .setEndColumnIndex(4)
+                            )
+                            .setFields("*")
+                    )
+            );
+    BatchUpdateValuesResponse batchResult = this.sheetService.spreadsheets().values()
                     .batchUpdate(id, batchBody)
                     .execute();
+            BatchUpdateSpreadsheetRequest body = new BatchUpdateSpreadsheetRequest().setRequests(requests);
+
+            BatchUpdateSpreadsheetResponse response = this.sheetService.spreadsheets().batchUpdate(id, body).execute();
+
 
 //            this.sheetService.spreadsheets().values()
 //                    .update(id, writeRange, data)
