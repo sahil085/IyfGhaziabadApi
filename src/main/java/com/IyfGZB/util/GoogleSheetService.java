@@ -1,5 +1,6 @@
 package com.IyfGZB.util;
 
+import com.IyfGZB.domain.SeminarAttendance;
 import com.IyfGZB.dto.SeminarAttendanceDTO;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.batch.BatchRequest;
@@ -13,6 +14,7 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.*;
 import org.apache.poi.ss.usermodel.Cell;
+import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,12 +30,13 @@ import java.util.List;
 /**
  * Created by sahil on 4/8/18.
  */
+@Service
 public class GoogleSheetService {
 
     private Sheets sheetService;
 
 
-    public void getSheetService() throws GeneralSecurityException,
+    public void getSheetService(List<SeminarAttendance> seminarAttendances) throws GeneralSecurityException,
             IOException {
         InputStream input = new URL("https://github.com/sahil085/IyfGhaziabadApi/blob/JuneQa/Iskcongzb-0f45852524c6.p12?raw=true").openStream();
         URL url = new URL("http://github.com/sahil085/IyfGhaziabadApi/blob/JuneQa/Iskcongzb-0f45852524c6.p12");
@@ -71,10 +74,10 @@ public class GoogleSheetService {
         sheetService = new Sheets.Builder(httpTransport, jsonFactory, credential)
                 .setApplicationName("INSERT_YOUR_APPLICATION_NAME")
                 .build();
-        writeDataInSheet(null,"Shree Kripalu Ji maharaj ki jai");
+        writeDataInSheet(seminarAttendances.get(0).getSeminar().getTitle(),seminarAttendances);
 
     }
-    public String createSpreadSheet(String title) throws IOException {
+    public String createSpreadSheet(String title,List<SeminarAttendance> seminarAttendances) throws IOException {
         Sheets service = null;
             service = this.sheetService;
 
@@ -82,8 +85,6 @@ public class GoogleSheetService {
         Spreadsheet spreadsheet = new Spreadsheet()
                 .setProperties(new SpreadsheetProperties()
                         .setTitle(title));
-        CellFormat cellFormat= new CellFormat();
-        cellFormat.setHorizontalAlignment("CENTER");
         spreadsheet = service.spreadsheets().create(spreadsheet)
                 .setFields("spreadsheetId")
                 .execute();
@@ -92,33 +93,33 @@ public class GoogleSheetService {
         return spreadsheet.getSpreadsheetId();
     }
 
-    public void writeDataInSheet(List<Object> myData,String title) {
+    public void writeDataInSheet(String title,List<SeminarAttendance> seminarAttendanceList) {
 
         try {
-            String id = createSpreadSheet(title);
+            String id = createSpreadSheet(title,seminarAttendanceList);
             String writeRange ="Sheet1!E5";
 
             List<SeminarAttendanceDTO> attendanceDTOList = new ArrayList<>();
             for(int i=0 ; i<5;i++){
                 SeminarAttendanceDTO attendanceDTO = new SeminarAttendanceDTO();
-                attendanceDTO.setSeminarTitle("hare krishna");
+                attendanceDTO.setSeminarTitle("Bhagwad Geeta 18.66");
                 attendanceDTO.setSpeakerName("HG Gopal Krishna Goswami Maharaj");
                 attendanceDTO.setStatus("Present");
-                attendanceDTO.setUserName("sahil verma");
+                attendanceDTO.setUserName("Sahil Verma");
                 attendanceDTOList.add(attendanceDTO);
             }
 
 
 
+
             List<List<Object>> writeData = new ArrayList<>();
 
-            for (SeminarAttendanceDTO someData : attendanceDTOList) {
+            for (SeminarAttendance seminarAttendance : seminarAttendanceList) {
                 List<Object> dataRow = new ArrayList<>();
-                dataRow.add(someData.getSeminarTitle());
-                dataRow.add(someData.getSpeakerName());
-                dataRow.add(someData.getDate());
-                dataRow.add(someData.getUserName());
-                dataRow.add(someData.getStatus());
+                dataRow.add(seminarAttendance.getSeminar().getTitle());
+                dataRow.add(seminarAttendance.getSeminar().getSpeakerName());
+                dataRow.add(seminarAttendance.getUser().getUsername());
+                dataRow.add(seminarAttendance.getAttendanceStatus());
                 writeData.add(dataRow);
             }
 //            ValueRange vr = new ValueRange().setValues(writeData).setMajorDimension("ROWS");
@@ -132,123 +133,10 @@ public class GoogleSheetService {
                     .setData(data);
 
 
-    List<Request> requests = new ArrayList<>();
-    requests.add(new Request().setUpdateDimensionProperties(
-            new UpdateDimensionPropertiesRequest()
-                    .setRange(
-                            new DimensionRange()
-                                    .setDimension("COLUMNS")
-                                    .setStartIndex(0).setEndIndex(4)
-                    )
-
-                    .setProperties(new DimensionProperties().setPixelSize(250)).setFields("pixelSize")));
-
-            requests.add(new Request()
-                    .setRepeatCell(new RepeatCellRequest()
-                            .setCell(new CellData()
-                                    .setUserEnteredValue( new ExtendedValue().setStringValue("Seminar Title"))
-                                    .setUserEnteredFormat(new CellFormat()
-                                            .setBackgroundColor(new Color()
-                                                    .setRed(Float.valueOf("1"))
-                                                    .setGreen(Float.valueOf("0"))
-                                                    .setBlue(Float.valueOf("0"))
-                                            ).setHorizontalAlignment("CENTER")
-                                            .setTextFormat(new TextFormat()
-                                                    .setFontSize(15)
-                                                    .setBold(Boolean.TRUE)
-                                            )
-                                    )
-                            )
-                            .setRange(new GridRange()
-                                    .setStartRowIndex(0)
-                                    .setEndRowIndex(1)
-                                    .setStartColumnIndex(0)
-                                    .setEndColumnIndex(1)
-                            )
-                            .setFields("*")
-                    )
-            );
-            requests.add(new Request()
-                    .setRepeatCell(new RepeatCellRequest()
-                            .setCell(new CellData()
-                                    .setUserEnteredValue( new ExtendedValue().setStringValue("Speaker Name"))
-                                    .setUserEnteredFormat(new CellFormat()
-                                            .setBackgroundColor(new Color()
-                                                    .setRed(Float.valueOf("1"))
-                                                    .setGreen(Float.valueOf("0"))
-                                                    .setBlue(Float.valueOf("0"))
-                                            ).setHorizontalAlignment("CENTER")
-                                            .setTextFormat(new TextFormat()
-                                                    .setFontSize(15)
-                                                    .setBold(Boolean.TRUE)
-                                            )
-                                    )
-                            )
-                            .setRange(new GridRange()
-
-                                    .setStartRowIndex(0)
-                                    .setEndRowIndex(1)
-                                    .setStartColumnIndex(1)
-                                    .setEndColumnIndex(2)
-                            )
-                            .setFields("*")
-                    )
-            );
-            requests.add(new Request()
-                    .setRepeatCell(new RepeatCellRequest()
-                            .setCell(new CellData()
-                                    .setUserEnteredValue( new ExtendedValue().setStringValue("User Name"))
-                                    .setUserEnteredFormat(new CellFormat()
-                                            .setBackgroundColor(new Color()
-                                                    .setRed(Float.valueOf("1"))
-                                                    .setGreen(Float.valueOf("0"))
-                                                    .setBlue(Float.valueOf("0"))
-                                            ).setHorizontalAlignment("CENTER")
-                                            .setTextFormat(new TextFormat()
-                                                    .setFontSize(15)
-                                                    .setBold(Boolean.TRUE)
-                                            )
-                                    )
-                            )
-                            .setRange(new GridRange()
-                                    .setStartRowIndex(0)
-                                    .setEndRowIndex(1)
-                                    .setStartColumnIndex(2)
-                                    .setEndColumnIndex(3)
-                            )
-                            .setFields("*")
-                    )
-            );
-            requests.add(new Request()
-                    .setRepeatCell(new RepeatCellRequest()
-                            .setCell(new CellData()
-                                    .setUserEnteredValue( new ExtendedValue().setStringValue("Attendance Status"))
-                                    .setUserEnteredFormat(new CellFormat()
-                                            .setBackgroundColor(new Color()
-                                                    .setRed(Float.valueOf("1"))
-                                                    .setGreen(Float.valueOf("0"))
-                                                    .setBlue(Float.valueOf("0"))
-
-                                            ).setHorizontalAlignment("CENTER")
-                                            .setTextFormat(new TextFormat()
-                                                    .setFontSize(15)
-                                                    .setBold(Boolean.TRUE)
-                                            )
-                                    )
-                            )
-                            .setRange(new GridRange()
-                                    .setStartRowIndex(0)
-                                    .setEndRowIndex(1)
-                                    .setStartColumnIndex(3)
-                                    .setEndColumnIndex(4)
-                            )
-                            .setFields("*")
-                    )
-            );
     BatchUpdateValuesResponse batchResult = this.sheetService.spreadsheets().values()
                     .batchUpdate(id, batchBody)
                     .execute();
-            BatchUpdateSpreadsheetRequest body = new BatchUpdateSpreadsheetRequest().setRequests(requests);
+            BatchUpdateSpreadsheetRequest body = new BatchUpdateSpreadsheetRequest().setRequests(getRequests());
 
             BatchUpdateSpreadsheetResponse response = this.sheetService.spreadsheets().batchUpdate(id, body).execute();
 
@@ -266,16 +154,142 @@ public class GoogleSheetService {
         }
     }
 
-    public static void main(String[] args) {
+    public List<Request> getRequests(){
+        List<Request> requests = new ArrayList<>();
+        requests.add(new Request().setUpdateDimensionProperties(
+                new UpdateDimensionPropertiesRequest()
+                        .setRange(
+                                new DimensionRange()
+                                        .setDimension("COLUMNS")
+                                        .setStartIndex(0).setEndIndex(4)
+                        )
 
-        GoogleSheetService sheetService= new GoogleSheetService();
+                        .setProperties(new DimensionProperties().setPixelSize(250)).setFields("pixelSize")));
+
+        requests.add(new Request()
+                .setRepeatCell(new RepeatCellRequest()
+                        .setCell(new CellData()
+                                .setUserEnteredValue( new ExtendedValue().setStringValue("Seminar Title"))
+                                .setUserEnteredFormat(new CellFormat()
+                                        .setBackgroundColor(new Color()
+                                                .setRed(Float.valueOf("1"))
+                                                .setGreen(Float.valueOf("0"))
+                                                .setBlue(Float.valueOf("0"))
+                                        ).setHorizontalAlignment("CENTER")
+                                        .setTextFormat(new TextFormat()
+                                                .setFontSize(15)
+                                                .setBold(Boolean.TRUE)
+                                        )
+                                )
+                        )
+                        .setRange(new GridRange()
+                                .setStartRowIndex(0)
+                                .setEndRowIndex(1)
+                                .setStartColumnIndex(0)
+                                .setEndColumnIndex(1)
+                        )
+                        .setFields("*")
+                )
+        );
+        requests.add(new Request()
+                .setRepeatCell(new RepeatCellRequest()
+                        .setCell(new CellData()
+                                .setUserEnteredValue( new ExtendedValue().setStringValue("Speaker Name"))
+                                .setUserEnteredFormat(new CellFormat()
+                                        .setBackgroundColor(new Color()
+                                                .setRed(Float.valueOf("1"))
+                                                .setGreen(Float.valueOf("0"))
+                                                .setBlue(Float.valueOf("0"))
+                                        ).setHorizontalAlignment("CENTER")
+                                        .setTextFormat(new TextFormat()
+                                                .setFontSize(15)
+                                                .setBold(Boolean.TRUE)
+                                        )
+                                )
+                        )
+                        .setRange(new GridRange()
+
+                                .setStartRowIndex(0)
+                                .setEndRowIndex(1)
+                                .setStartColumnIndex(1)
+                                .setEndColumnIndex(2)
+                        )
+                        .setFields("*")
+                )
+        );
+        requests.add(new Request()
+                .setRepeatCell(new RepeatCellRequest()
+                        .setCell(new CellData()
+                                .setUserEnteredValue( new ExtendedValue().setStringValue("User Name"))
+                                .setUserEnteredFormat(new CellFormat()
+                                        .setBackgroundColor(new Color()
+                                                .setRed(Float.valueOf("1"))
+                                                .setGreen(Float.valueOf("0"))
+                                                .setBlue(Float.valueOf("0"))
+                                        ).setHorizontalAlignment("CENTER")
+                                        .setTextFormat(new TextFormat()
+                                                .setFontSize(15)
+                                                .setBold(Boolean.TRUE)
+                                        )
+                                )
+                        )
+                        .setRange(new GridRange()
+                                .setStartRowIndex(0)
+                                .setEndRowIndex(1)
+                                .setStartColumnIndex(2)
+                                .setEndColumnIndex(3)
+                        )
+                        .setFields("*")
+                )
+        );
+        requests.add(new Request()
+                .setRepeatCell(new RepeatCellRequest()
+                        .setCell(new CellData()
+                                .setUserEnteredValue( new ExtendedValue().setStringValue("Attendance Status"))
+                                .setUserEnteredFormat(new CellFormat()
+                                        .setBackgroundColor(new Color()
+                                                .setRed(Float.valueOf("1"))
+                                                .setGreen(Float.valueOf("0"))
+                                                .setBlue(Float.valueOf("0"))
+
+                                        ).setHorizontalAlignment("CENTER")
+                                        .setTextFormat(new TextFormat()
+                                                .setFontSize(15)
+                                                .setBold(Boolean.TRUE)
+                                        )
+                                )
+                        )
+                        .setRange(new GridRange()
+                                .setStartRowIndex(0)
+                                .setEndRowIndex(1)
+                                .setStartColumnIndex(3)
+                                .setEndColumnIndex(4)
+                        )
+                        .setFields("*")
+                )
+        );
+        return requests;
+    }
+    public void sendSeminarAttendanceReport(List<SeminarAttendance> seminarAttendances){
         try {
-            sheetService.getSheetService();
+            getSheetService(seminarAttendances);
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
+//
+//    public static void main(String[] args) {
+//
+//        GoogleSheetService sheetService= new GoogleSheetService();
+//        try {
+//            sheetService.getSheetService();
+//        } catch (GeneralSecurityException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 }

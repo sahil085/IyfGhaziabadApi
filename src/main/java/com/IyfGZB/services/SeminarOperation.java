@@ -169,11 +169,13 @@ public class SeminarOperation {
     }
 
 
-    public List<Seminar> getAllUpcomingSeminars(){
+    public List<Seminar> getAllSeminars(){
 
         try{
-            return seminarRepo.findAllByDateAfter(new Date());
+            Sort sort= new Sort(Sort.Order.desc("date"));
+            return seminarRepo.findAll(sort);
         }catch (Exception e){
+            logger.error(e.getMessage());
             return null;
         }
     }

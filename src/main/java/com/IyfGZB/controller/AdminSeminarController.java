@@ -34,10 +34,10 @@ private SeminarOperation seminarOperation;
 @Autowired
 private GoogleDriveService googleDriveService;
 
-    @GetMapping(value = "/upcomingSeminars")
+    @GetMapping(value = "/Seminars")
     public List<Seminar> getAllSeminar()
     {
-        return seminarOperation.getAllUpcomingSeminars();
+        return seminarOperation.getAllSeminars();
     }
 
     @PostMapping(value = "/createseminar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
