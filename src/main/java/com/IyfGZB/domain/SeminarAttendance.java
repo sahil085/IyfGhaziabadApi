@@ -18,6 +18,7 @@ public class SeminarAttendance {
 
     private String attendanceStatus;
 
+    @OneToOne
     private UserInfo user;
 
     private String attendanceMarkedBy;
@@ -28,9 +29,9 @@ public class SeminarAttendance {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    @Column(name = "DATE_MODIFIED",nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modifiedDate;
+//    @Column(name = "DATE_MODIFIED",nullable = false)
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date modifiedDate;
 
     public Long getId() {
         return id;
@@ -88,11 +89,11 @@ public class SeminarAttendance {
         this.createdDate = createdDate;
     }
 
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
+//    public Date getModifiedDate() {
+//        return modifiedDate;
+//    }
+//
+//    public void setModifiedDate(Date modifiedDate) {
+//        this.modifiedDate = modifiedDate;
+//    }
 }

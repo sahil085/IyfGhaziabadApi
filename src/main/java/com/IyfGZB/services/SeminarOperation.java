@@ -183,7 +183,7 @@ public class SeminarOperation {
     public SeminarRecordDTO getSeminar(Long seminarId){
         try{
           Seminar seminar =  seminarRepo.findSeminarById(seminarId);
-          List<SeminarRecord> seminarRecord = seminarRecordRepo.findAllByBySeminar(seminar);
+          List<SeminarRecord> seminarRecord = seminarRecordRepo.findAllBySeminar(seminar);
           List<SeminarRecord> seminarRecordList = new ArrayList<>();
           Long count = 0l;
           Long totalSeats=seminar.getTotalNumberOfSeats();

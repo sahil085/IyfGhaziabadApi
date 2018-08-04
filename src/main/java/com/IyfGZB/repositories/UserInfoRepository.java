@@ -17,6 +17,7 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
 
       UserInfo findOneByUsername(String username);
       UserInfo findByEmail(String username);
+      List<UserInfo> findAllByUsernameContainingOrEmailContaining(String username,String email);
 
       @Query(value = "select email from User_Info",nativeQuery = true)
       List<String> getAllEmails();

@@ -34,33 +34,61 @@ public class SeminarAttendanceOperation {
     @Autowired
     UserInfoRepository userInfoRepository;
 
-    public CommonResponseDTO markAttendance(Long seminarId,Long userId,String status){
-        try{
-
-            UserInfo userInfo = userInfoRepository.findById(userId).get();
+    public CommonResponseDTO markAttendance(Long seminarId, Long userId, String status) {
+        try {
             Seminar seminar = seminarRepo.findSeminarById(seminarId);
-            SeminarAttendance attendance= new SeminarAttendance();
-            attendance.setSeminar(seminar);
-            attendance.setUser(userInfo);
-            String userEmail = CurrentUser.getCurrentUser().getEmail();
-            attendance.setAttendanceMarkedBy(userEmail);
-            attendance.setCreatedDate(new Date());
-            if(status.equals(AttendanceConstant.MARK_PRESENT)){
-                attendance.setAttendanceStatus(AttendanceConstant.MARK_PRESENT);
 
-            }else {
-                attendance.setAttendanceStatus(AttendanceConstant.MARK_ABSENT);
+
+            SeminarAttendance attendance = seminarAttendanceRepo.findSeminarAttendanceBySeminarAndUserId(seminar, userId);
+            if (attendance != null) {
+                UserInfo userInfo = userInfoRepository.findById(userId).get();
+                attendance.setSeminar(seminar);
+                attendance.setUser(userInfo);
+                String userEmail = CurrentUser.getCurrentUser().getEmail();
+                attendance.setAttendanceMarkedBy(userEmail);
+                attendance.setCreatedDate(new Date());
+                if (status.equals(AttendanceConstant.MARK_PRESENT)) {
+                    attendance.setAttendanceStatus(AttendanceConstant.MARK_PRESENT);
+                    seminarAttendanceRepo.save(attendance);
+                    return new CommonResponseDTO("success", "User marked as present");
+
+
+                } else {
+                    attendance.setAttendanceStatus(AttendanceConstant.MARK_ABSENT);
+                    seminarAttendanceRepo.save(attendance);
+                    return new CommonResponseDTO("success", "User marked as absent");
+
+                }
+            } else {
+                SeminarAttendance attendance1 = new SeminarAttendance();
+                UserInfo userInfo = userInfoRepository.findById(userId).get();
+
+                attendance1.setSeminar(seminar);
+                attendance1.setUser(userInfo);
+                String userEmail = CurrentUser.getCurrentUser().getEmail();
+                attendance1.setAttendanceMarkedBy(userEmail);
+                attendance1.setCreatedDate(new Date());
+                if (status.equals(AttendanceConstant.MARK_PRESENT)) {
+                    attendance1.setAttendanceStatus(AttendanceConstant.MARK_PRESENT);
+                    seminarAttendanceRepo.save(attendance1);
+                    return new CommonResponseDTO("success", "User marked as present");
+
+
+                } else {
+                    attendance1.setAttendanceStatus(AttendanceConstant.MARK_ABSENT);
+                    seminarAttendanceRepo.save(attendance1);
+                    return new CommonResponseDTO("success", "User marked as absent");
+
+                }
+
             }
-            return new CommonResponseDTO("success","User marked as present");
-
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
-            return new CommonResponseDTO("danger","Try again");
+            return new CommonResponseDTO("danger", "Try again");
         }
 
 
     }
-
 
 
 }

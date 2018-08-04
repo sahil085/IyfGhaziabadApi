@@ -34,7 +34,7 @@ private SeminarOperation seminarOperation;
 @Autowired
 private GoogleDriveService googleDriveService;
 
-    @GetMapping(value = "/Seminars")
+    @GetMapping(value = "/seminars")
     public List<Seminar> getAllSeminar()
     {
         return seminarOperation.getAllSeminars();
