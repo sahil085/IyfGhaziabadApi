@@ -2,7 +2,11 @@ package com.IyfGZB.util;
 
 import com.IyfGZB.domain.Seminar;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.batch.BatchRequest;
+import com.google.api.client.googleapis.batch.json.JsonBatchCallback;
+import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.http.FileContent;
+import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -11,6 +15,10 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import com.google.api.services.drive.model.Permission;
+import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.core.io.Resource;
@@ -62,13 +70,15 @@ public class GoogleDriveService {
                 .setTransport(httpTransport)
                 .setJsonFactory(jsonFactory)
                 .setServiceAccountId("drive-441@iskcongzb-6cbb6.iam.gserviceaccount.com")
-                .setServiceAccountScopes(Arrays.asList(DriveScopes.DRIVE))
+                .setServiceAccountScopes(Arrays.asList(DriveScopes.DRIVE, SheetsScopes.SPREADSHEETS))
                 .setServiceAccountUser("")
                 .setServiceAccountPrivateKeyFromP12File(key)
                 .build();
         Drive service = new Drive.Builder(httpTransport, jsonFactory, credential)
                 .setApplicationName("iskcongzb")
                 .build();
+        BatchRequest batch = service.batch();
+
         return service;
     }
 
@@ -94,6 +104,47 @@ public class GoogleDriveService {
                 .setFields("id, parents")
                 .execute();
         return "https://drive.google.com/uc?id="+file.getId();
+    }
+
+    public void grantAuthority(String sheetId,Sheets sheetService){
+        JsonBatchCallback<Permission> callback = new JsonBatchCallback<Permission>() {
+            @Override
+            public void onFailure(GoogleJsonError e,
+                                  HttpHeaders responseHeaders)
+                    throws IOException {
+                // Handle error
+                System.err.println(e.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Permission permission,
+                                  HttpHeaders responseHeaders)
+                    throws IOException {
+                System.out.println("Permission ID: " + permission.getId());
+            }
+        };
+        Drive drive=null;
+        try {
+             drive= getDriveService();
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BatchRequest batch = drive.batch();
+        Permission userPermission = new Permission()
+                .setType("user")
+                .setRole("writer")
+                .setEmailAddress("vermasahil269@gmail.com");
+        try {
+            drive.permissions().create(sheetId, userPermission)
+                    .setFields("id")
+                    .queue(batch, callback);
+            batch.execute();
+            System.out.println("hari bol..!!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

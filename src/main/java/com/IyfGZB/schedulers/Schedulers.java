@@ -17,7 +17,7 @@ public class Schedulers {
     SchedularService schedularService;
     @Scheduled(cron = "")
     public void sendAttendanceSheet(){
-        schedularService
+//        schedularService
 
 
     }
