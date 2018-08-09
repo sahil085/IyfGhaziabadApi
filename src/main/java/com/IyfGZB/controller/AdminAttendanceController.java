@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasAnyAuthority('ADMIN','IYFVolunteer')")
 @RequestMapping("/admin")
 public class AdminAttendanceController {
 

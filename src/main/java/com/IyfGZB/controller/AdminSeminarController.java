@@ -9,6 +9,7 @@ import com.IyfGZB.util.GoogleDriveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 @CrossOrigin
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasAnyAuthority('ADMIN','IYFVolunteer')")
 public class AdminSeminarController {
 
     public static final Logger logger = LoggerFactory.getLogger(AdminSeminarController.class);
@@ -34,10 +35,11 @@ private SeminarOperation seminarOperation;
 @Autowired
 private GoogleDriveService googleDriveService;
 
-    @GetMapping(value = "/seminars")
-    public List<Seminar> getAllSeminar()
+    @GetMapping(value = "/seminars/{itemPerPage}/{pageNumber}")
+    public Page<Seminar> getAllSeminar(@PathVariable("itemPerPage") Integer itemPerPage,
+                                       @PathVariable("pageNumber") Integer pageNumber)
     {
-        return seminarOperation.getAllSeminars();
+        return seminarOperation.getAllSeminars(itemPerPage,pageNumber);
     }
 
     @PostMapping(value = "/createseminar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

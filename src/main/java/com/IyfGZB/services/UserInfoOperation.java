@@ -36,7 +36,7 @@ public class UserInfoOperation {
             userInfos.forEach( userInfo -> {
                UserListForAttendanceDTO userListForAttendanceDTO = new UserListForAttendanceDTO();
                 userListForAttendanceDTO.setMobileNumber(userInfo.getMobileNumber());
-                userListForAttendanceDTO.setUserEmail(userInfo.getUsername());
+                userListForAttendanceDTO.setUserName(userInfo.getUsername());
                 userListForAttendanceDTO.setUserEmail(userInfo.getEmail());
                 userListForAttendanceDTO.setUserId(userInfo.getId());
                 users.add(userListForAttendanceDTO);

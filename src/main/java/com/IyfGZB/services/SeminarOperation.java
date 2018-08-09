@@ -16,6 +16,7 @@ import com.IyfGZB.securityservices.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -169,11 +170,12 @@ public class SeminarOperation {
     }
 
 
-    public List<Seminar> getAllSeminars(){
+    public Page<Seminar> getAllSeminars(Integer itemPerPage, Integer pageNumber){
 
         try{
-            Sort sort= new Sort(Sort.Order.desc("date"));
-            return seminarRepo.findAll(sort);
+            PageRequest pageRequest=new PageRequest(pageNumber,itemPerPage,Sort.Direction.DESC,"date");
+
+            return seminarRepo.findAll(pageRequest);
         }catch (Exception e){
             logger.error(e.getMessage());
             return null;
