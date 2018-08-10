@@ -99,15 +99,15 @@ public class GoogleSheetService {
             String id = createSpreadSheet(title,seminarAttendanceList);
             String writeRange ="Sheet1!E5";
 
-            List<SeminarAttendanceDTO> attendanceDTOList = new ArrayList<>();
-            for(int i=0 ; i<5;i++){
-                SeminarAttendanceDTO attendanceDTO = new SeminarAttendanceDTO();
-                attendanceDTO.setSeminarTitle("Bhagwad Geeta 18.66");
-                attendanceDTO.setSpeakerName("HG Gopal Krishna Goswami Maharaj");
-                attendanceDTO.setStatus("Present");
-                attendanceDTO.setUserName("Sahil Verma");
-                attendanceDTOList.add(attendanceDTO);
-            }
+//            List<SeminarAttendanceDTO> attendanceDTOList = new ArrayList<>();
+//            for(int i=0 ; i<5;i++){
+//                SeminarAttendanceDTO attendanceDTO = new SeminarAttendanceDTO();
+//                attendanceDTO.setSeminarTitle("Bhagwad Geeta 18.66");
+//                attendanceDTO.setSpeakerName("HG Gopal Krishna Goswami Maharaj");
+//                attendanceDTO.setStatus("Present");
+//                attendanceDTO.setUserName("Sahil Verma");
+//                attendanceDTOList.add(attendanceDTO);
+//            }
 
 
 
