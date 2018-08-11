@@ -63,6 +63,11 @@ public class Seminar  implements Serializable {
 
     private String thumbNailUrl;
 
+    private Boolean isPoster;
+
+    @Column(length = 400)
+    private String attendanceSheetUrl;
+
     public String getCreatedBy() {
         return createdBy;
     }
