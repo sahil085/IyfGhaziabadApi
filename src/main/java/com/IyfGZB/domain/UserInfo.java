@@ -53,6 +53,9 @@ public  class UserInfo extends BaseModel implements Serializable,UserDetails {
     private String city;
 
     @Column(nullable = false)
+    private String state;
+
+    @Column(nullable = false)
     private String street;
 
     @Column(nullable = false)
@@ -270,8 +273,15 @@ public  class UserInfo extends BaseModel implements Serializable,UserDetails {
         this.gender = gender;
     }
 
+    public String getState() {
+        return state;
+    }
 
-//    @Override
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    //    @Override
 //    public String toString() {
 //        return "UserInfo{" +
 //                "id=" + id +

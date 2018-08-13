@@ -2,6 +2,7 @@ package com.IyfGZB.securityconfiguration;
 
 import com.IyfGZB.filters.CorsFilter;
 import com.IyfGZB.securityservices.CustomUserDetailsService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
      CustomUserDetailsService appUserDetailsService;
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

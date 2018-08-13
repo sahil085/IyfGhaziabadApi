@@ -2,8 +2,11 @@ package com.IyfGZB.services;
 
 import com.IyfGZB.domain.UserInfo;
 import com.IyfGZB.dto.UserListForAttendanceDTO;
+import com.IyfGZB.dto.UserProfileDTO;
 import com.IyfGZB.repositories.UserInfoRepository;
+import com.IyfGZB.securityservices.CurrentUser;
 import com.IyfGZB.userdto.UserDto;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,9 @@ import java.util.List;
 public class UserInfoOperation {
 
     public static final Logger logger = LoggerFactory.getLogger(UserInfoOperation.class);
+
+    @Autowired
+    public ModelMapper modelMapper;
 
 
     @Autowired
@@ -47,5 +53,14 @@ public class UserInfoOperation {
             logger.error(e.getMessage());
             return null;
         }
+    }
+
+    public UserProfileDTO getUserDetails(){
+        UserInfo userInfo = CurrentUser.getCurrentUser();
+      UserProfileDTO userProfileDTO = modelMapper.map(userInfo,UserProfileDTO.class);
+
+        System.out.println(userProfileDTO);
+        return userProfileDTO;
+
     }
 }
