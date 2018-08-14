@@ -43,30 +43,29 @@ public class SchedularService {
     public static final org.slf4j.Logger logger = LoggerFactory.getLogger(SchedularService.class);
 
 
+    public void sendSeminarAttendanceSheet() {
+        try {
+            System.out.println(" --- " + new Date());
+            List<Seminar> seminarList = seminarRepo.findAll();
+            DateTimeComparator dateTimeComparator = DateTimeComparator.getDateOnlyInstance();
+            seminarList.forEach(seminar -> {
 
-    public void sendSeminarAttendanceSheet(){
-try {
-    System.out.println( " --- " +new Date());
-    List<Seminar> seminarList = seminarRepo.findAll();
-    DateTimeComparator dateTimeComparator = DateTimeComparator.getDateOnlyInstance();
-    seminarList.forEach(seminar -> {
+                if (dateTimeComparator.compare(seminar.getDate(), new Date()) == 0) {
+                    List<SeminarAttendance> seminarAttendances = seminarAttendanceRepo.findAllBySeminar(seminar);
+                    logger.info("Seminar Report Starts For " + seminar.getTitle());
+                    if (!seminarAttendances.isEmpty()) {
+                        googleSheetService.sendSeminarAttendanceReport(seminarAttendances);
+                    }
+                    logger.info("Seminar Report Ends For " + seminar.getTitle());
+                }
 
-        if(dateTimeComparator.compare(seminar.getDate(),new Date()) == 0){
-            List<SeminarAttendance> seminarAttendances = seminarAttendanceRepo.findAllBySeminar(seminar);
-            logger.info("Seminar Report Starts For " + seminar.getTitle());
-            if(!seminarAttendances.isEmpty()){
-                googleSheetService.sendSeminarAttendanceReport(seminarAttendances);
-            }
-            logger.info("Seminar Report Ends For " + seminar.getTitle());
+
+            });
+            logger.info("Attendance Report Generated For All Seminars On " + new Date());
+        } catch (Exception e) {
+            System.out.println("-----------------");
+            logger.error(e.getMessage());
         }
-
-
-    });
-    logger.info("Attendance Report Generated For All Seminars On "+new Date());
-}catch (Exception e){
-    System.out.println("-----------------");
-    logger.error(e.getMessage());
-}
 
     }
 }

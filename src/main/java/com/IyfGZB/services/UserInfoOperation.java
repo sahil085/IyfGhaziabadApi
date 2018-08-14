@@ -57,10 +57,21 @@ public class UserInfoOperation {
 
     public UserProfileDTO getUserDetails(){
         UserInfo userInfo = CurrentUser.getCurrentUser();
-      UserProfileDTO userProfileDTO = modelMapper.map(userInfo,UserProfileDTO.class);
+        UserProfileDTO userProfileDTO = modelMapper.map(userInfo,UserProfileDTO.class);
 
         System.out.println(userProfileDTO);
         return userProfileDTO;
+
+    }
+
+    public UserProfileDTO updateUserprofile(UserProfileDTO userProfileDTO){
+        UserInfo userInfo = CurrentUser.getCurrentUser();
+        UserInfo userInfo1 = modelMapper.map(userProfileDTO, UserInfo.class);
+        userInfo1.setId(userInfo.getId());
+        userInfoRepository.save(userInfo1);
+
+        System.out.println(userInfo1);
+return null;
 
     }
 }

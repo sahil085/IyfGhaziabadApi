@@ -77,6 +77,11 @@ dependencies {
 //	testCompile('org.springframework.boot:spring-boot-starter-test')
 //	testCompile('org.springframework.security:spring-security-test')
 }
+bootRun {
+    jvmArgs = [
+            "-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5006"
+    ]
+}
 jar {
     baseName = 'app'
     version = '0.0.1'
