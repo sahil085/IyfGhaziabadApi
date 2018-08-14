@@ -1,8 +1,9 @@
 package com.IyfGZB.services;
 
+import com.IyfGZB.domain.Role;
 import com.IyfGZB.domain.UserInfo;
-import com.IyfGZB.dto.UserListForAttendanceDTO;
-import com.IyfGZB.dto.UserProfileDTO;
+import com.IyfGZB.dto.UserListDTO;
+import com.IyfGZB.dto.UserProfileEditDTO;
 import com.IyfGZB.repositories.UserInfoRepository;
 import com.IyfGZB.securityservices.CurrentUser;
 import com.IyfGZB.userdto.UserDto;
@@ -10,10 +11,12 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserInfoOperation {
@@ -33,19 +36,19 @@ public class UserInfoOperation {
 
     }
 
-    public List<UserListForAttendanceDTO> getAllUserBasicInfo(String input){
+    public List<UserListDTO> getAllUserBasicInfo(String input){
 
         try{
             List<UserInfo> userInfos = userInfoRepository.findAllByUsernameContainingOrEmailContaining(input,
                     input);
-            List<UserListForAttendanceDTO> users= new ArrayList<>();
+            List<UserListDTO> users= new ArrayList<>();
             userInfos.forEach( userInfo -> {
-               UserListForAttendanceDTO userListForAttendanceDTO = new UserListForAttendanceDTO();
-                userListForAttendanceDTO.setMobileNumber(userInfo.getMobileNumber());
-                userListForAttendanceDTO.setUserName(userInfo.getUsername());
-                userListForAttendanceDTO.setUserEmail(userInfo.getEmail());
-                userListForAttendanceDTO.setUserId(userInfo.getId());
-                users.add(userListForAttendanceDTO);
+               UserListDTO userListDTO = new UserListDTO();
+                userListDTO.setMobileNumber(userInfo.getMobileNumber());
+                userListDTO.setUserName(userInfo.getUsername());
+                userListDTO.setUserEmail(userInfo.getEmail());
+                userListDTO.setUserId(userInfo.getId());
+                users.add(userListDTO);
             });
             return users;
 
@@ -55,23 +58,55 @@ public class UserInfoOperation {
         }
     }
 
-    public UserProfileDTO getUserDetails(){
-        UserInfo userInfo = CurrentUser.getCurrentUser();
-        UserProfileDTO userProfileDTO = modelMapper.map(userInfo,UserProfileDTO.class);
+    public UserProfileEditDTO getUserDetails(Long userId){
+        try{
+            UserInfo userInfo = userInfoRepository.findById(userId).get();
+            UserProfileEditDTO userProfileEditDTO = modelMapper.map(userInfo,UserProfileEditDTO.class);
+            return userProfileEditDTO;
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            return null;
+        }
 
-        System.out.println(userProfileDTO);
-        return userProfileDTO;
+
+    }
+
+    public UserProfileEditDTO updateUserprofile(UserProfileEditDTO userProfileEditDTO){
+       try{
+           UserInfo userInfo = userInfoRepository.findByEmail(userProfileEditDTO.getEmail());
+           userInfo = userInfo.updateUser(userProfileEditDTO,userInfo);
+           userInfoRepository.saveAndFlush(userInfo);
+           userProfileEditDTO = modelMapper.map(userInfo, UserProfileEditDTO.class);
+           return userProfileEditDTO;
+       }catch (Exception e){
+           logger.error(e.getMessage());
+           return null;
+       }
+    }
+
+    public Map<String,Object> getAllUser(Integer userPerPage, Integer pageIndex){
+        try{
+            PageRequest pageRequest=new PageRequest(pageIndex,userPerPage, Sort.Direction.ASC,"username");
+
+            Page<UserInfo> userInfos=userInfoRepository.findAll(pageRequest);
+            List<UserListDTO> userDtoList = new ArrayList<>();
+            userInfos.forEach(userInfo -> {
+                UserListDTO userDto = new UserListDTO();
+                userDto.setUserId(userInfo.getId());
+                userDto.setUserEmail(userInfo.getEmail());
+                userDto.setUserName(userInfo.getUsername());
+                userDto.setMobileNumber(userInfo.getMobileNumber());
+                userDtoList.add(userDto);
+            });
+            Map<String,Object> map = new HashMap<>();
+            map.put("userList",userDtoList);
+            map.put("totalPage",userInfos.getTotalPages());
+            return map;
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            return null;
+        }
 
     }
 
-    public UserProfileDTO updateUserprofile(UserProfileDTO userProfileDTO){
-        UserInfo userInfo = CurrentUser.getCurrentUser();
-        UserInfo userInfo1 = modelMapper.map(userProfileDTO, UserInfo.class);
-        userInfo1.setId(userInfo.getId());
-        userInfoRepository.save(userInfo1);
-
-        System.out.println(userInfo1);
-return null;
-
-    }
 }

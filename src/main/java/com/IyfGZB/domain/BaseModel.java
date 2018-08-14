@@ -79,7 +79,7 @@ public class BaseModel {
             try {
                 if(authentication.getPrincipal() instanceof UserInfo){
                     UserInfo userInfo = (UserInfo) authentication.getPrincipal();
-                    return userInfo.getUsername();
+                    return userInfo.getEmail();
                 }else{
                     return (String) authentication.getPrincipal();
                 }

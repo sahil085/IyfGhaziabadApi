@@ -3,7 +3,7 @@ package com.IyfGZB.dto;
 /**
  * Created by sahil on 5/8/18.
  */
-public class UserListForAttendanceDTO {
+public class UserListDTO {
 
     private Long userId;
     private String UserName;

@@ -5,7 +5,7 @@ import javax.persistence.Column;
 /**
  * Created by sahil on 13/8/18.
  */
-public class UserProfileDTO {
+public class UserProfileEditDTO {
 
     private String username;
     private String email ;

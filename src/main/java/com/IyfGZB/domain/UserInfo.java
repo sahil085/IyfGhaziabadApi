@@ -1,9 +1,6 @@
 package com.IyfGZB.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import org.springframework.context.annotation.Scope;
+import com.IyfGZB.dto.UserProfileEditDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -55,13 +52,8 @@ public  class UserInfo extends BaseModel implements Serializable,UserDetails {
     @Column(nullable = false)
     private String state;
 
-    @Column(nullable = false)
-    private String street;
-
-    @Column(nullable = false)
     private String isInitiated;
 
-    @Column(nullable = false)
     private Integer roundsChant;
 
     private String facilitatorName;
@@ -70,13 +62,12 @@ public  class UserInfo extends BaseModel implements Serializable,UserDetails {
 
     private String counslerName;
 
-    @Column(nullable = false)
+
     private String nearestIskconTemple;
 
     @Column(nullable = false)
     private Integer vedicLevel;
 
-    @Column(nullable = false)
     private Boolean isBrahmchari;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
@@ -193,14 +184,6 @@ public  class UserInfo extends BaseModel implements Serializable,UserDetails {
         this.city = city;
     }
 
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
     public String getIsInitiated() {
         return isInitiated;
     }
@@ -279,6 +262,28 @@ public  class UserInfo extends BaseModel implements Serializable,UserDetails {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public UserInfo updateUser(UserProfileEditDTO userProfileEditDTO, UserInfo userInfo){
+
+        userInfo.setIsInitiated(userProfileEditDTO.getIsInitiated());
+        userInfo.setNearestIskconTemple(userProfileEditDTO.getNearestIskconTemple());
+        userInfo.setState(userProfileEditDTO.getState());
+        userInfo.setBrahmchari(userProfileEditDTO.getBrahmchari());
+        userInfo.setAlternateMobileNumber(userProfileEditDTO.getAlternateMobileNumber());
+        userInfo.setCity(userProfileEditDTO.getCity());
+        userInfo.setCounslerName(userProfileEditDTO.getCounslerName());
+        userInfo.setVedicLevel(userProfileEditDTO.getVedicLevel());
+        userInfo.setSeniorFacilitatorName(userProfileEditDTO.getSeniorFacilitatorName());
+        userInfo.setRoundsChant(userProfileEditDTO.getRoundsChant());
+        userInfo.setUsername(userProfileEditDTO.getUsername());
+        userInfo.setEmail(userProfileEditDTO.getEmail());
+        userInfo.setGender(userProfileEditDTO.getGender());
+        userInfo.setMobileNumber(userProfileEditDTO.getMobileNumber());
+        userInfo.setCurrentAddress(userProfileEditDTO.getCurrentAddress());
+        userInfo.setPermanentAddress(userProfileEditDTO.getPermanentAddress());
+        return  userInfo;
+
     }
 
     //    @Override

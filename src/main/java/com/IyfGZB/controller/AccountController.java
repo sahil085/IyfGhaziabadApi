@@ -59,7 +59,7 @@ public class AccountController {
         roles.add(role);
         newUser.setRoles(roles);
         newUser.setBrahmchari(false);
-        newUser.setNearestIskconTemple(" To be decided by facilitator");
+        newUser.setNearestIskconTemple("To be decided by facilitator");
         newUser.setIsInitiated("No");
 //        newUser.setPassword(encode);
         return new ResponseEntity<String>(userAccountService.createUser(newUser), HttpStatus.CREATED);
