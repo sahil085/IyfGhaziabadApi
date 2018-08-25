@@ -71,7 +71,7 @@ public  class UserInfo extends BaseModel implements Serializable,UserDetails {
     private String nearestIskconTemple;
 
     @Column(nullable = false)
-    private Integer vedicLevel;
+    private String classLevel;
 
     @Column(nullable = false)
     private Boolean isBrahmchari;
@@ -246,12 +246,12 @@ public  class UserInfo extends BaseModel implements Serializable,UserDetails {
         this.nearestIskconTemple = nearestIskconTemple;
     }
 
-    public Integer getVedicLevel() {
-        return vedicLevel;
+    public String getClassLevel() {
+        return classLevel;
     }
 
-    public void setVedicLevel(Integer vedicLevel) {
-        this.vedicLevel = vedicLevel;
+    public void setClassLevel(String classLevel) {
+        this.classLevel = classLevel;
     }
 
     public Boolean getBrahmchari() {

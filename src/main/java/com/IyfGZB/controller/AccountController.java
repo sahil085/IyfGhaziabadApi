@@ -71,7 +71,6 @@ public class AccountController {
     }
 
     @CrossOrigin
-    @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/user")
     public UserInfo getUser(){
 

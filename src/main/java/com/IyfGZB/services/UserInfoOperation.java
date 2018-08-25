@@ -1,5 +1,6 @@
 package com.IyfGZB.services;
 
+import com.IyfGZB.domain.Seminar;
 import com.IyfGZB.domain.UserInfo;
 import com.IyfGZB.dto.UserListForAttendanceDTO;
 import com.IyfGZB.repositories.UserInfoRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserInfoOperation {
@@ -21,9 +23,11 @@ public class UserInfoOperation {
     @Autowired
         private UserInfoRepository userInfoRepository;
 
-    public List<String> getallEmails(){
+    public List<String> getallEmails(String classLevel,String city){
 
-       return userInfoRepository.getAllEmails();
+      List<UserInfo> list =userInfoRepository.findAllByClassLevelAndCity(classLevel,city);
+
+      return list.stream().map(UserInfo::getEmail).collect(Collectors.toList());
 
     }
 

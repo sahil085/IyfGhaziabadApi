@@ -45,15 +45,16 @@ public class SeminarController {
 
     }
 
-    @PostMapping("/bookSeatForSeminar/{seminarId}/{status}")
+    @PostMapping("/bookSeatForSeminar/{seminarId}/{status}/{email}")
     public CommonResponseDTO bookSeatForSeminar(@PathVariable("seminarId") Long seminarId,
-                                                @PathVariable("status") String status){
+                                                @PathVariable("status") String status,
+                                                @PathVariable("email") String email){
 
-       return seminarRecordService.bookSeatForSeminar(seminarId, status);
+       return seminarRecordService.bookSeatForSeminar(seminarId, status,email);
 
     }
 
-    @PutMapping("/cancelSeatForSeminar/{seminarRecordId}/{reason}")
+    @PutMapping("/cancelSeatForSeminar/{seminarRecordId}/{reason}/{email}")
     public CommonResponseDTO cancelSeatForSeminar(@PathVariable("reason") String reason,
                                                   @PathVariable("seminarRecordId") Long seminarRecordId){
         return seminarRecordService.cancelseatForSeminar(seminarRecordId,reason);

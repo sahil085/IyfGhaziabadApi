@@ -36,7 +36,7 @@ public class SeminarNotificationService {
    @Value("${seminar.subject}")
    private String subject;
 
-   @Value("${seminar.actionlink}")
+   @Value("${url}")
    private String actionLink;
 
    @Value("${seminar.updation.subject}")
@@ -48,6 +48,12 @@ public class SeminarNotificationService {
     @Async
     public void sendEmail(Seminar seminar) throws MessagingException {
 
+//        if(seminar.isPoster()){
+//
+//        }else{
+//
+//        }
+
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("title", seminar.getTitle());
         model.put("speakerName",seminar.getSpeakerName());
@@ -58,13 +64,14 @@ public class SeminarNotificationService {
         model.put("day",DateUtil.getDateInString(seminar.getDate()));
         model.put("speakerDesc",seminar.getSpeakerDescription());
         model.put("seminarDesc",seminar.getSeminarDescription());
+
         model.put("actionLink",actionLink);
         String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/template/seminarEmailTemplte", "UTF-8", model);
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-       List<String> list= userInfoOperation.getallEmails();
+       List<String> list= userInfoOperation.getallEmails(seminar.getCategory(),seminar.getCity());
 
 //        mimeMessageHelper.setFrom(new InternetAddress("vermasahil269@gmail.com"));
         mimeMessageHelper.setTo(list.toArray(new String[list.size()]));
@@ -96,7 +103,7 @@ public class SeminarNotificationService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        List<String> list= userInfoOperation.getallEmails();
+        List<String> list= userInfoOperation.getallEmails(seminar.getCategory(), seminar.getCity());
 
 //        mimeMessageHelper.setFrom(new InternetAddress("vermasahil269@gmail.com"));
         mimeMessageHelper.setTo(list.toArray(new String[list.size()]));
@@ -107,4 +114,5 @@ public class SeminarNotificationService {
 
 
     }
+
 }

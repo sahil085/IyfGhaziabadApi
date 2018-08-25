@@ -1,8 +1,7 @@
 package com.IyfGZB.services;
 
+import com.IyfGZB.constants.ClassLevel;
 import com.IyfGZB.constants.RoleConstant;
-import com.IyfGZB.constants.VedicLevel;
-import com.IyfGZB.controller.AccountController;
 import com.IyfGZB.domain.Role;
 import com.IyfGZB.domain.UserInfo;
 import com.IyfGZB.repositories.UserInfoRepository;
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.rmi.CORBA.Util;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,17 +30,15 @@ public class UserAccountService {
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
             userInfo.setRoles(roleSet);
-            userInfo.setVedicLevel(VedicLevel.VEDIC_LEVEL_ONE);
+            userInfo.setClassLevel(ClassLevel.One_Time_Program);
             userInfo.setBrahmchari(false);
             userInfo.setPassword(Encryptpassword.encryptPassword(userInfo.getPassword()));
-            if(userInfo.getRoundsChant()==null)
-            {
+            if (userInfo.getRoundsChant() == null) {
                 userInfo.setRoundsChant(0);
             }
             userInfoRepository.saveAndFlush(userInfo);
             return "Registered Successfully";
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return " Please Try Again Registration unsuccessfull ";
         }
