@@ -4,12 +4,9 @@
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web:700" rel="stylesheet">
 </head>
 <body>
-<div class="bgimg" style="background-image: url('https://hdbackgroundspot.com//storage/upload/black-abstract-background/black-abstract-background-1.jpg')">
-<div class="row" style="color: white;">
+<div class="row" style="color: white;background-color: #000000">
     <center>
-    <a href=${actionLink}><button class="btn btn-primary">
-     Click Here To Book Your Seat
-    </button></a>
+
         <img src="https://raw.githubusercontent.com/ravi97garg/codes/master/logo.png" style="max-width: 45%;margin-top: 15px">
         <div>
             <h3 style="color: white">presents</h3>

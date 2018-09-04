@@ -1,4 +1,6 @@
 package com.IyfGZB.repositories;
+import com.IyfGZB.constants.RoleConstant;
+import com.IyfGZB.domain.Role;
 import com.IyfGZB.domain.Seminar;
 import com.IyfGZB.domain.UserInfo;
 import org.springframework.data.domain.Pageable;
