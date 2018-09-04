@@ -8,6 +8,7 @@ import com.IyfGZB.domain.SeminarRecord;
 import com.IyfGZB.domain.UserInfo;
 import com.IyfGZB.repositories.SeminarRecordRepo;
 import com.IyfGZB.repositories.SeminarRepo;
+import com.IyfGZB.repositories.UserInfoRepository;
 import com.IyfGZB.securityservices.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,15 +23,22 @@ public class SeminarRecordService{
 
     @Autowired
     private SeminarRecordRepo seminarRecordRepo;
+    @Autowired
+    private UserInfoRepository userInfoRepository;
 
     @Autowired
     private SeminarRepo seminarRepo;
 
     @Transactional
-    public CommonResponseDTO bookSeatForSeminar(Long seminarId, String status){
+    public CommonResponseDTO bookSeatForSeminar(Long seminarId, String status, String email){
         try{
             Seminar seminar=seminarRepo.findSeminarById(seminarId);
-            UserInfo userInfo= CurrentUser.getCurrentUser();
+            UserInfo userInfo;
+            if(email!=null){
+                userInfo = userInfoRepository.findByEmail(email);
+            }else {
+                userInfo= CurrentUser.getCurrentUser();
+            }
             seminarRecordRepo.deleteSeminarRecordBySeminarAndUser(seminar,userInfo);
             SeminarRecord seminarRecord= new SeminarRecord();
             seminarRecord.setSeminar(seminar);
@@ -49,6 +57,7 @@ public class SeminarRecordService{
 
     public CommonResponseDTO cancelseatForSeminar(Long seminarRecordId, String reason){
         try {
+
             SeminarRecord seminarRecord=seminarRecordRepo.findSeminarRecordById(seminarRecordId);
             seminarRecord.setResponse(reason);
             seminarRecord.setStatus(SeminarConstant.STATUS_CANCELED);

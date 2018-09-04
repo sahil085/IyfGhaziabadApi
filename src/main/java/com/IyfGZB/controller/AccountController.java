@@ -53,14 +53,7 @@ public class AccountController {
     @RequestMapping(value = "/register", method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createUser(@RequestBody UserInfo newUser) {
 
-        Role role=new Role();
-        role.setRole(RoleConstant.ROLE_USER);
-        Set<Role> roles=new HashSet<>();
-        roles.add(role);
-        newUser.setRoles(roles);
-        newUser.setBrahmchari(false);
-        newUser.setNearestIskconTemple("To be decided by facilitator");
-        newUser.setIsInitiated("No");
+
 //        newUser.setPassword(encode);
         return new ResponseEntity<String>(userAccountService.createUser(newUser), HttpStatus.CREATED);
     }
@@ -74,7 +67,6 @@ public class AccountController {
     }
 
     @CrossOrigin
-    @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/user")
     public UserInfo getUser(){
 

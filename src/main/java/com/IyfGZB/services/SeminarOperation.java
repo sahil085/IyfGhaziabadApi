@@ -83,7 +83,7 @@ public class SeminarOperation {
               seminarDto.setThumbNailUrl(seminar.getThumbNailUrl());
 
               if(!seminar.getCategory().equals(SeminarConstant.OTP)){
-                if(Integer.parseInt(seminar.getCategory()) == (userInfo.getVedicLevel())){
+                if(seminar.getCategory().equals(userInfo.getClassLevel())){
                     SeminarRecord seminarRecord =  seminarRecordRepo.findSeminarRecordBySeminarAndUser(seminar,userInfo);
                     if(seminarRecord !=null){
                         if(seminarRecord.getStatus().equals(SeminarConstant.STATUS_BOOKED))

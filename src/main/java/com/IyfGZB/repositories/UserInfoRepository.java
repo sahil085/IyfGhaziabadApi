@@ -1,4 +1,5 @@
 package com.IyfGZB.repositories;
+import com.IyfGZB.domain.Seminar;
 import com.IyfGZB.domain.UserInfo;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,11 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * @author kamal berriga
- *
- */
-/* this the user  Repository interface  */
+
 @Repository
 public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
 
@@ -19,10 +16,9 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
       UserInfo findByEmail(String username);
       List<UserInfo> findAllByUsernameContainingOrEmailContaining(String username,String email);
 
-      @Query(value = "select email from User_Info",nativeQuery = true)
-      List<String> getAllEmails();
+      List<UserInfo> findAllByClassLevelAndCity(String classLevel, String city);
 
 
     @Override
-    UserInfo getOne(Long aLong);
+    UserInfo getOne(Long Long);
 }

@@ -39,7 +39,7 @@ public class UserProfileEditDTO {
 
     private String nearestIskconTemple;
 
-    private Integer vedicLevel;
+    private String classLevel;
 
     private Boolean isBrahmchari;
 
@@ -171,12 +171,12 @@ public class UserProfileEditDTO {
         this.nearestIskconTemple = nearestIskconTemple;
     }
 
-    public Integer getVedicLevel() {
-        return vedicLevel;
+    public String getClassLevel() {
+        return classLevel;
     }
 
-    public void setVedicLevel(Integer vedicLevel) {
-        this.vedicLevel = vedicLevel;
+    public void setClassLevel(String classLevel) {
+        this.classLevel = classLevel;
     }
 
     public Boolean getBrahmchari() {

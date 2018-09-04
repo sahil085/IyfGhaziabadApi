@@ -46,9 +46,11 @@ private GoogleDriveService googleDriveService;
     public ResponseEntity<?> createSeminar(@RequestPart("form") Seminar seminar, @RequestPart("file") MultipartFile multipartFile)
     {
         try{
-            String fileUrl=googleDriveService.uploadFile(seminar,multipartFile);
-            seminar.setThumbNailUrl(fileUrl);
-            return new ResponseEntity<>(seminarOperation.createSeminar(seminar),HttpStatus.OK);
+
+                String fileUrl=googleDriveService.uploadFile(seminar,multipartFile);
+                seminar.setThumbNailUrl(fileUrl);
+                return new ResponseEntity<>(seminarOperation.createSeminar(seminar),HttpStatus.OK);
+
         }catch (Exception e){
             logger.error(e.getMessage());
             return new ResponseEntity<CommonResponseDTO>(new CommonResponseDTO("danger",

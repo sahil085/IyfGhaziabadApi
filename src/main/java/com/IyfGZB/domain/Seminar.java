@@ -18,8 +18,9 @@ public class Seminar  implements Serializable {
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
-
     private String venue;
+
+    private String city;
 
     @Column(nullable = false)
 
@@ -62,6 +63,24 @@ public class Seminar  implements Serializable {
     private Long totalNumberOfSeats;
 
     private String thumbNailUrl;
+
+    private boolean isPoster;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public boolean isPoster() {
+        return isPoster;
+    }
+
+    public void setPoster(boolean poster) {
+        isPoster = poster;
+    }
 
     public String getCreatedBy() {
         return createdBy;
@@ -205,6 +224,7 @@ public class Seminar  implements Serializable {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", venue='" + venue + '\'' +
+                ", city='" + city + '\'' +
                 ", startTime='" + startTime + '\'' +
                 ", endTime='" + endTime + '\'' +
                 ", date=" + date +
@@ -219,6 +239,7 @@ public class Seminar  implements Serializable {
                 ", totalNumberOfAvailableSeats=" + totalNumberOfAvailableSeats +
                 ", totalNumberOfSeats=" + totalNumberOfSeats +
                 ", thumbNailUrl='" + thumbNailUrl + '\'' +
+                ", isPoster=" + isPoster +
                 '}';
     }
 }
