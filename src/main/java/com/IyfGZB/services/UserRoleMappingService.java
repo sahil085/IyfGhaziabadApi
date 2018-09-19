@@ -46,6 +46,7 @@ public class UserRoleMappingService {
                userDto.setUserId(userInfo.getId());
                userDto.setEmail(userInfo.getEmail());
                userDto.setMobileNumber(userInfo.getMobileNumber());
+               userDto.setClassLevel(userInfo.getClassLevel());
                Set<Role> roles=userInfo.getRoles();
                roles.forEach(role -> {
                    userDto.setCurrentRole(role.getRole());
@@ -87,6 +88,7 @@ public class UserRoleMappingService {
 
 
                 userInfo.setRoles(roles);
+                userInfo.setClassLevel(userCo.getClassLevel());
 
                 userInfoRepository.save(userInfo);
             }

@@ -1,5 +1,6 @@
 package com.IyfGZB.util;
 
+import com.IyfGZB.domain.Seminar;
 import com.IyfGZB.domain.SeminarAttendance;
 import com.IyfGZB.dto.SeminarAttendanceDTO;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -74,7 +75,8 @@ public class GoogleSheetService {
         sheetService = new Sheets.Builder(httpTransport, jsonFactory, credential)
                 .setApplicationName("INSERT_YOUR_APPLICATION_NAME")
                 .build();
-        writeDataInSheet(seminarAttendances.get(0).getSeminar().getTitle(),seminarAttendances);
+        Seminar seminar = seminarAttendances.get(0).getSeminar();
+        writeDataInSheet(seminar.getTitle() + " - ( "+seminar.getCategory()+" )",seminarAttendances);
 
     }
     public String createSpreadSheet(String title,List<SeminarAttendance> seminarAttendances) throws IOException {

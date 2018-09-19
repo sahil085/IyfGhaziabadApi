@@ -14,7 +14,6 @@ import java.util.Set;
 
 @Entity
 @Table(name="User_Info")
-
 public  class UserInfo extends BaseModel implements Serializable,UserDetails {
 
     /**
@@ -275,6 +274,7 @@ public  class UserInfo extends BaseModel implements Serializable,UserDetails {
         userInfo.setCounslerName(userProfileEditDTO.getCounslerName());
         userInfo.setClassLevel(userProfileEditDTO.getClassLevel());
         userInfo.setSeniorFacilitatorName(userProfileEditDTO.getSeniorFacilitatorName());
+        userInfo.setFacilitatorName(userProfileEditDTO.getFacilitatorName());
         userInfo.setRoundsChant(userProfileEditDTO.getRoundsChant());
         userInfo.setUsername(userProfileEditDTO.getUsername());
         userInfo.setEmail(userProfileEditDTO.getEmail());

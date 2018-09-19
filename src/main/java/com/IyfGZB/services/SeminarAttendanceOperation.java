@@ -10,13 +10,17 @@ import com.IyfGZB.repositories.SeminarAttendanceRepo;
 import com.IyfGZB.repositories.SeminarRepo;
 import com.IyfGZB.repositories.UserInfoRepository;
 import com.IyfGZB.securityservices.CurrentUser;
+import com.IyfGZB.userdto.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by sahil on 3/8/18.
@@ -88,6 +92,27 @@ public class SeminarAttendanceOperation {
         }
 
 
+    }
+
+    public  Map<String, Object> getAttendeeForSeminar(Long seminarId, Integer itemPerPage, Integer pageNumber){
+
+        Seminar seminar = seminarRepo.findSeminarById(seminarId);
+        PageRequest pageRequest=new PageRequest(pageNumber,itemPerPage, Sort.Direction.DESC,"createdDate");
+        Map<String, Object> data = new HashMap<>();
+        Page<SeminarAttendance> seminarAttendanceList = seminarAttendanceRepo.findAllBySeminar(seminar,pageRequest);
+        List<UserDto> userDtoList = new ArrayList<>();
+        seminarAttendanceList.getContent().forEach(seminarAttendance -> {
+            UserDto userDto = new UserDto();
+            userDto.setClassLevel(seminarAttendance.getUser().getClassLevel());
+            userDto.setUserName(seminarAttendance.getUser().getUsername());
+            userDto.setMobileNumber(seminarAttendance.getUser().getMobileNumber());
+            userDto.setAttendanceStatus(seminarAttendance.getAttendanceStatus());
+            userDto.setAttendanceMarkedBy(seminarAttendance.getAttendanceMarkedBy());
+            userDtoList.add(userDto);
+        });
+        data.put("attendeeList",userDtoList);
+        data.put("totalElements",seminarAttendanceList.getTotalElements());
+        return data;
     }
 
 

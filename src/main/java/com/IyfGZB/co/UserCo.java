@@ -5,6 +5,7 @@ public class UserCo {
     private Integer sNo;
     private Long UserId;
     private String currentRole;
+    private String classLevel;
     private String role;
     private String userName;
     private String email;
@@ -64,5 +65,13 @@ public class UserCo {
 
     public void setMobileNumber(Long mobileNumber) {
         this.mobileNumber = mobileNumber;
+    }
+
+    public String getClassLevel() {
+        return classLevel;
+    }
+
+    public void setClassLevel(String classLevel) {
+        this.classLevel = classLevel;
     }
 }

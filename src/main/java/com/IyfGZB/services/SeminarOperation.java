@@ -51,7 +51,7 @@ public class SeminarOperation {
             seminar.setCreatedDate(new Date());
             seminarRepo.save(seminar);
 
-            notificationService.sendEmail(seminar);
+//            notificationService.sendEmail(seminar);
 
             return new CommonResponseDTO("success","Seminar Created Successfully");
         }catch (Exception e){

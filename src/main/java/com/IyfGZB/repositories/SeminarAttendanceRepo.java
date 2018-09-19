@@ -4,6 +4,8 @@ import com.IyfGZB.domain.Seminar;
 import com.IyfGZB.domain.SeminarAttendance;
 import com.IyfGZB.domain.User;
 import com.IyfGZB.domain.UserInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +19,7 @@ public interface SeminarAttendanceRepo extends JpaRepository<SeminarAttendance,L
 
 
     List<SeminarAttendance> findAllBySeminar(Seminar seminar);
+    Page<SeminarAttendance> findAllBySeminar(Seminar seminar, Pageable pageable);
     SeminarAttendance findSeminarAttendanceBySeminarAndUserId(Seminar seminar, Long userId);
 
 
