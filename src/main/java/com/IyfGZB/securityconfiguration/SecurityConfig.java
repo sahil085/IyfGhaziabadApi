@@ -1,6 +1,11 @@
 package com.IyfGZB.securityconfiguration;
 
+import com.IyfGZB.constants.ClassLevel;
+import com.IyfGZB.constants.RoleConstant;
+import com.IyfGZB.domain.Role;
+import com.IyfGZB.domain.UserInfo;
 import com.IyfGZB.filters.CorsFilter;
+import com.IyfGZB.repositories.UserInfoRepository;
 import com.IyfGZB.securityservices.CustomUserDetailsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +28,19 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import javax.annotation.PostConstruct;
+import java.util.HashSet;
+import java.util.Set;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true,jsr250Enabled = true,prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
      CustomUserDetailsService appUserDetailsService;
+
+    @Autowired
+    UserInfoRepository userInfoRepository;
 
     @Bean
     public ModelMapper modelMapper() {
@@ -67,6 +79,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
             }
         };
+    }
+
+    @PostConstruct
+    public void createAdmin(){
+        UserInfo userInfo1 = userInfoRepository.findByEmail("vermasahil269@gmail.com");
+        if(userInfo1==null){
+            UserInfo userInfo = new UserInfo();
+            userInfo.setClassLevel(ClassLevel.One_Time_Program);
+            userInfo.setPermanentAddress("permanent addrr");
+            userInfo.setCurrentAddress("Current adddrr");
+            userInfo.setMobileNumber(8920041231L);
+            userInfo.setGender("Male");
+            userInfo.setEmail("vermasahil269@gmail.com");
+            userInfo.setUsername("Sahil verma");
+            userInfo.setRoundsChant(8);
+            userInfo.setCounslerName("HG Sunder Gopal das");
+            userInfo.setFacilitatorName("HG Charu Govind Das");
+            userInfo.setSeniorFacilitatorName("HG Sarv Mangal Gaur Das");
+            userInfo.setCity("Ghaziabad");
+            userInfo.setBrahmchari(false);
+            userInfo.setPassword(new BCryptPasswordEncoder().encode("123"));
+            userInfo.setState("Uttar Pradesh");
+            Set<Role> roles = new HashSet<>();
+            Role role = new Role();
+            role.setRole(RoleConstant.ROLE_ADMIN);
+            roles.add(role);
+            userInfo.setRoles(roles);
+            userInfoRepository.saveAndFlush(userInfo);
+
+            System.out.println(" ****  Admin Created  ****");
+        }
+
+
     }
 
     @Override

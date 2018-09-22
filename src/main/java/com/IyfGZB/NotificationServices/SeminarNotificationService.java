@@ -19,10 +19,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SeminarNotificationService {
@@ -69,14 +66,23 @@ public class SeminarNotificationService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-       List<String> list= userInfoOperation.getallEmails(seminar.getCategory(),seminar.getCity());
+        List<String> list= userInfoOperation.getallEmails(seminar.getCategory(), seminar.getCity());
 
-        mimeMessageHelper.setFrom(new InternetAddress("vermasahil269@gmail.com"));
-        mimeMessageHelper.setTo(list.toArray(new String[list.size()]));
-        mimeMessageHelper.setSubject(subject);
-        mimeMessageHelper.setText(text, true);
+//        List<String> list = Arrays.asList("vermasahil269@gmail.com","sahil.14bit1114@abes.ac.in");
+        list.forEach( v -> {
+            try {
+                mimeMessageHelper.setTo(v);
+                mimeMessageHelper.setCc("vermasahil269@gmail.com");
+                mimeMessageHelper.setSubject(subject);
+                mimeMessageHelper.setText(text, true);
+                javaMailSender.send(mimeMessage);
+                System.out.println(" Email Sent To  -- > "+v);
 
-        javaMailSender.send(mimeMessage);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+
+        });
 
 
     }
@@ -101,14 +107,26 @@ public class SeminarNotificationService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        List<String> list= userInfoOperation.getallEmails(seminar.getCategory(), seminar.getCity());
+//        List<String> list= userInfoOperation.getallEmails(seminar.getCategory(), seminar.getCity());
+        List<String> list = Arrays.asList("vermasahil269@gmail.com","sahil.14bit1114@abes.ac.in");
+        list.forEach( v -> {
+            try {
+                mimeMessageHelper.setTo(v);
+                mimeMessageHelper.setSubject(seminarUpdateSubject);
+                mimeMessageHelper.setText(text, true);
 
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+
+            javaMailSender.send(mimeMessage);
+        });
 //        mimeMessageHelper.setFrom(new InternetAddress("vermasahil269@gmail.com"));
-        mimeMessageHelper.setTo(list.toArray(new String[list.size()]));
-        mimeMessageHelper.setSubject(seminarUpdateSubject);
-        mimeMessageHelper.setText(text, true);
-
-        javaMailSender.send(mimeMessage);
+//        mimeMessageHelper.setTo(list.toArray(new String[list.size()]));
+//        mimeMessageHelper.setSubject(seminarUpdateSubject);
+//        mimeMessageHelper.setText(text, true);
+//
+//        javaMailSender.send(mimeMessage);
 
 
     }

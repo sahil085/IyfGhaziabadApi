@@ -102,6 +102,7 @@ public class UserInfoOperation {
                 userDto.setUserEmail(userInfo.getEmail());
                 userDto.setUserName(userInfo.getUsername());
                 userDto.setMobileNumber(userInfo.getMobileNumber());
+                userDto.setClassLevel(userInfo.getClassLevel());
                 userDtoList.add(userDto);
             });
             Map<String,Object> map = new HashMap<>();

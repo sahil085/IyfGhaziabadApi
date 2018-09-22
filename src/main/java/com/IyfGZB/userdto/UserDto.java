@@ -9,10 +9,13 @@ public class UserDto {
     private Integer sNo;
     private Long UserId;
     private String currentRole;
+    private String classLevel;
     private String role;
     private String userName;
     private String email;
     private Long mobileNumber;
+    private String attendanceStatus;
+    private String attendanceMarkedBy;
 
     public Integer getsNo() {
         return sNo;
@@ -68,5 +71,29 @@ public class UserDto {
 
     public void setMobileNumber(Long mobileNumber) {
         this.mobileNumber = mobileNumber;
+    }
+
+    public String getClassLevel() {
+        return classLevel;
+    }
+
+    public void setClassLevel(String classLevel) {
+        this.classLevel = classLevel;
+    }
+
+    public String getAttendanceStatus() {
+        return attendanceStatus;
+    }
+
+    public void setAttendanceStatus(String attendanceStatus) {
+        this.attendanceStatus = attendanceStatus;
+    }
+
+    public String getAttendanceMarkedBy() {
+        return attendanceMarkedBy;
+    }
+
+    public void setAttendanceMarkedBy(String attendanceMarkedBy) {
+        this.attendanceMarkedBy = attendanceMarkedBy;
     }
 }

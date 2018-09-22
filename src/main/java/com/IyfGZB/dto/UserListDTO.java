@@ -9,6 +9,7 @@ public class UserListDTO {
     private String UserName;
     private String userEmail;
     private Long mobileNumber;
+    private String classLevel;
 
     public Long getUserId() {
         return userId;
@@ -40,5 +41,13 @@ public class UserListDTO {
 
     public void setMobileNumber(Long mobileNumber) {
         this.mobileNumber = mobileNumber;
+    }
+
+    public String getClassLevel() {
+        return classLevel;
+    }
+
+    public void setClassLevel(String classLevel) {
+        this.classLevel = classLevel;
     }
 }
