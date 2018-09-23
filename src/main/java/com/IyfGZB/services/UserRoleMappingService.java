@@ -54,7 +54,7 @@ public class UserRoleMappingService {
                userDto.setUserName(userInfo.getUsername());
                userDtoList.add(userDto);
            });
-           Long totalUsers = userInfoRepository.count()/userPerPage;
+           Long totalUsers = userInfos.getTotalElements();
            Map<String,Object> map = new HashMap<>();
            map.put("userList",userDtoList);
            map.put("totalPage",totalUsers);

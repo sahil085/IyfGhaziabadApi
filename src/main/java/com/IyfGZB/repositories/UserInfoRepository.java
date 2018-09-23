@@ -19,6 +19,7 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
       List<UserInfo> findAllByUsernameContainingOrEmailContaining(String username,String email);
 
       List<UserInfo> findAllByClassLevelAndCity(String classLevel, String city);
+      List<UserInfo> findAllByCity(String city);
 
 
     @Override

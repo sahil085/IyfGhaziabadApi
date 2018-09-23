@@ -39,6 +39,9 @@ public class SeminarOperation {
     @Autowired
     SeminarRecordRepo seminarRecordRepo;
 
+    @Autowired
+    CallingSewaService callingSewaService;
+
     public static final Logger logger = LoggerFactory.getLogger(SeminarOperation.class);
 
     public CommonResponseDTO createSeminar(Seminar seminar){
@@ -52,6 +55,7 @@ public class SeminarOperation {
             seminarRepo.save(seminar);
 
 //            notificationService.sendEmail(seminar);
+            callingSewaService.allocateCallingSewa(seminar);
 
             return new CommonResponseDTO("success","Seminar Created Successfully");
         }catch (Exception e){
