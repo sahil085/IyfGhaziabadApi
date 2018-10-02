@@ -1,11 +1,14 @@
 package com.IyfGZB.controller;
 
+import com.IyfGZB.constants.RoleConstant;
 import com.IyfGZB.domain.CallingSewa;
 import com.IyfGZB.domain.Seminar;
 import com.IyfGZB.dto.CallingSewaDTO;
 import com.IyfGZB.repositories.SeminarRepo;
 import com.IyfGZB.services.CallingSewaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/callingSewa")
+
 public class AdminCallingSewaController {
 
     @Autowired

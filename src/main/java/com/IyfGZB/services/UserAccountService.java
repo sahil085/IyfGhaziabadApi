@@ -32,9 +32,7 @@ public class UserAccountService {
             userInfo.setRoles(roleSet);
             userInfo.setNearestIskconTemple("To be decided by facilitator");
             userInfo.setIsInitiated("No");
-            if(userInfo.getClassLevel().equals("") || userInfo.getClassLevel() == null) {
-                userInfo.setClassLevel(ClassLevel.One_Time_Program);
-            }
+            userInfo.setClassLevel(ClassLevel.One_Time_Program);
             userInfo.setBrahmchari(false);
             userInfo.setPassword(Encryptpassword.encryptPassword(userInfo.getPassword()));
             if (userInfo.getRoundsChant() == null) {

@@ -67,16 +67,32 @@ public class CallingSewaService {
         return map;
     }
 
-    @Async
+//    userInfoList.stream().flatMap(userInfo -> userInfo.getRoles().stream()).filter(role1 -> {
+//        if(role1.getRole().equals(RoleConstant.ROLE_IYF_VOLUNTEER))
+//            return true;
+//        else {
+//            return false;
+//        }
+//    }).collect(Collectors.toList());
+
     public void allocateCallingSewa(Seminar seminar) {
 
         List<UserInfo> userInfoList = userInfoRepository.findAll();
+        Set<Role> roleSet = new HashSet<>();
         Role role = new Role();
         role.setRole(RoleConstant.ROLE_IYF_VOLUNTEER);
+        roleSet.add(role);
         Predicate<UserInfo> predicate = userInfo -> userInfo.getRoles().contains(role);
-        List<UserInfo> iyfVolunteers = userInfoList.stream().filter(predicate).collect(Collectors.toList());
+        List<UserInfo> iyfVolunteers = userInfoList.stream().filter(userRole ->
+                userRole.getRoles().stream().anyMatch(
+                (role1 -> {
+                    return role1.getRole().equals(RoleConstant.ROLE_IYF_VOLUNTEER);
+                })
+        )).collect(Collectors.toList());
         role.setRole(RoleConstant.ROLE_USER);
-        predicate = userInfo -> userInfo.getRoles().contains(role);
+        predicate = userInfo -> userInfo.getRoles().stream().anyMatch((role1 -> {
+            return role1.getRole().equals(RoleConstant.ROLE_USER);
+        }));
         List<UserInfo> usersToAllocate = userInfoList.stream().filter(predicate).collect(Collectors.toList());
 
         Integer usersPerVolunteer = (usersToAllocate.size() / iyfVolunteers.size());
@@ -84,19 +100,35 @@ public class CallingSewaService {
         IntStream.range(0, iyfVolunteers.size()).parallel().forEach(index -> {
             List<CallingSewa> callingSewas = new ArrayList<>();
             UserInfo volunteer = iyfVolunteers.get(index);
+            if(index == iyfVolunteers.size() -1){
+                List<UserInfo> userInfos = usersToAllocate.subList(index * usersPerVolunteer, usersToAllocate.size());
+                userInfos.forEach(userInfo -> {
+                            CallingSewa callingSewa = new CallingSewa();
+                            callingSewa.setCalled(false);
+                            callingSewa.setResponseStatus("Not Called Yet");
+                            callingSewa.setSeminar(seminar);
+                            callingSewa.setSewaAllocationDate(new Date());
+                            callingSewa.setUser(userInfo);
+                            callingSewa.setVolunteer(volunteer);
+                            callingSewas.add(callingSewa);
+                        }
+                );
+            }else {
+                List<UserInfo> userInfos = usersToAllocate.subList(index * usersPerVolunteer, ((index+1) * usersPerVolunteer));
+                userInfos.forEach(userInfo -> {
+                            CallingSewa callingSewa = new CallingSewa();
+                            callingSewa.setCalled(false);
+                            callingSewa.setResponseStatus("Not Called Yet");
+                            callingSewa.setSeminar(seminar);
+                            callingSewa.setSewaAllocationDate(new Date());
+                            callingSewa.setUser(userInfo);
+                            callingSewa.setVolunteer(volunteer);
+                            callingSewas.add(callingSewa);
+                        }
+                );
 
-            List<UserInfo> userInfos = usersToAllocate.subList(index * usersPerVolunteer, (index * usersPerVolunteer) + 20);
-            userInfos.forEach(userInfo -> {
-                        CallingSewa callingSewa = new CallingSewa();
-                        callingSewa.setCalled(false);
-                        callingSewa.setResponseStatus("Not Called Yet");
-                        callingSewa.setSeminar(seminar);
-                        callingSewa.setSewaAllocationDate(new Date());
-                        callingSewa.setUser(userInfo);
-                        callingSewa.setVolunteer(volunteer);
-                        callingSewas.add(callingSewa);
-                    }
-            );
+            }
+
             callingSewaRepo.saveAll(callingSewas);
             callingSewaRepo.flush();
             logger.info(" Calling Sewa Allocation Done For  -- "+volunteer.getUsername());
@@ -104,4 +136,5 @@ public class CallingSewaService {
 
 
     }
+
 }

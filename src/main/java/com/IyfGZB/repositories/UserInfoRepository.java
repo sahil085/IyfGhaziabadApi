@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Repository
@@ -20,6 +21,7 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
 
       List<UserInfo> findAllByClassLevelAndCity(String classLevel, String city);
       List<UserInfo> findAllByCity(String city);
+      List<UserInfo> findAllByRoles(Role role);
 
 
     @Override

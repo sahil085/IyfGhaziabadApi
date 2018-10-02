@@ -1,0 +1,69 @@
+import java.io.*;
+import java.util.Map;
+public class Testing{
+    public static void main(String...args) throws InterruptedException, IOException {
+        ProcessBuilder builder = new ProcessBuilder("java","-cp",".","SampleCode");
+
+        Map<String, String> environ = builder.environment();
+        Process process = null;
+        InputStream processInputStream = null;
+        OutputStream processOutputStream = null;
+        try {
+            builder.redirectErrorStream(true);
+
+           File input = ProcessBuilder.Redirect.PIPE.file();
+            File output = new File("ProcessLog.txt");
+builder.redirectInput(output);
+            process = builder.redirectOutput(input).start();
+
+
+
+
+            processInputStream = process.getInputStream();
+            processOutputStream = process.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        byte[] buffer = new byte[4000];
+        while (isAlive(process)) {
+
+            int ni =  System.in.available();
+            if (ni > 0) {
+                int n = System.in.read(buffer, 0, Math.min(ni, buffer.length));
+                processOutputStream.write(buffer, 0, n);
+                processOutputStream.flush();
+            }
+            int no = processInputStream.available();
+            if (no > 0) {
+                int n = processInputStream.read(buffer, 0, Math.min(no, buffer.length));
+
+                System.out.println(new String(buffer, 0, n));
+            }
+
+            try {
+                Thread.sleep(10);
+            }
+            catch (InterruptedException e) {
+		System.out.println(" process intrupteed " );
+            }
+        }
+
+        System.out.println(process.exitValue());
+    }
+
+
+
+
+    public static boolean isAlive(Process p) {
+        try {
+            p.exitValue();
+            return false;
+        }
+        catch (IllegalThreadStateException e) {
+            return true;
+        }
+    }
+}

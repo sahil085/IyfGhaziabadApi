@@ -1,9 +1,6 @@
 package com.IyfGZB.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -15,9 +12,11 @@ public class CallingSewa {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id ;
-
+    @OneToOne
     private UserInfo user;
+    @OneToOne
     private UserInfo volunteer;
+    @OneToOne
     private Seminar seminar;
     private Boolean isCalled;
     private String responseStatus;

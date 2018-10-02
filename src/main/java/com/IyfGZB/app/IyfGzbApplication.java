@@ -5,6 +5,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,7 @@ import java.util.Properties;
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true,jsr250Enabled = true)
 @EnableAsync
-public class IyfGzbApplication {
+public class IyfGzbApplication extends SpringBootServletInitializer {
 	@Bean
 	public VelocityEngine getVelocityEngine() throws VelocityException, IOException {
 		VelocityEngineFactory factory = new VelocityEngineFactory();
