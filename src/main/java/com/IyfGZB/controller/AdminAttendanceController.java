@@ -47,10 +47,10 @@ public class AdminAttendanceController {
 
     }
 
-    @GetMapping("/attendanceSheet")
-    public void sendAttendanceSheet(){
-        schedularService.sendSeminarAttendanceSheet();
-    }
+//    @GetMapping("/attendanceSheet")
+//    public void sendAttendanceSheet(){
+//        schedularService.sendSeminarAttendanceSheet();
+//    }
 
     @GetMapping("/attendeeBySeminar/{seminarId}/{pageSize}/{pageIndex}")
     public Map<String, Object> getAttendeeForSeminar(@PathVariable("seminarId") Long seminarId,
@@ -60,6 +60,7 @@ public class AdminAttendanceController {
         return seminarAttendanceOperation.getAttendeeForSeminar(seminarId,pageSize, pageIndex);
 
     }
+
 
 
 }

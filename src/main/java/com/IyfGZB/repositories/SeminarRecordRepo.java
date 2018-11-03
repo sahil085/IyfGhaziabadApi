@@ -18,4 +18,5 @@ public interface SeminarRecordRepo extends JpaRepository<SeminarRecord,Long> {
       List<SeminarRecord> findAllBySeminar(Seminar seminar);
 
       void deleteSeminarRecordBySeminarAndUser(Seminar seminar,UserInfo userInfo);
+
 }

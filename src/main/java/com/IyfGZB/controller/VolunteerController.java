@@ -32,9 +32,9 @@ public class VolunteerController {
 
     }
 
-    @GetMapping("/attendanceSheet")
-    public void sendAttendanceSheet(){
-        schedularService.sendSeminarAttendanceSheet();
-    }
+//    @GetMapping("/attendanceSheet")
+//    public void sendAttendanceSheet(){
+//        schedularService.sendSeminarAttendanceSheet();
+//    }
 
 }

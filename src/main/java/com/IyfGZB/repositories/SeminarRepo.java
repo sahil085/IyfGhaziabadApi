@@ -16,7 +16,10 @@ public interface SeminarRepo extends JpaRepository<Seminar,Long> {
     List<Seminar> findAllByDateAfter(Date date, Pageable pageable);
     List<Seminar> findAllByDateAfter(Date date);
     List<Seminar> findAllByDate(@Temporal(TemporalType.DATE) Date date);
+    List<Seminar> findAllByDateBetweenAndCategory(Date lastTwoMonthDate, Date currentDate, String category);
     Seminar findSeminarById(Long id);
+    List<Seminar> findAllByCategory(String category);
+
 
 
 }

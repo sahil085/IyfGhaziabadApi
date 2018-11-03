@@ -11,8 +11,11 @@ public class SeminarAttendanceDTO {
     private String seminarTitle;
     private String speakerName;
     private Date date;
+    private String dummyDate;
     private String userName;
     private String status;
+
+    private Integer startIndex;
 
     public String getSeminarTitle() {
         return seminarTitle;
@@ -38,6 +41,14 @@ public class SeminarAttendanceDTO {
         this.date = date;
     }
 
+    public Integer getStartIndex() {
+        return startIndex;
+    }
+
+    public void setStartIndex(Integer startIndex) {
+        this.startIndex = startIndex;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -52,5 +63,13 @@ public class SeminarAttendanceDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDummyDate() {
+        return dummyDate;
+    }
+
+    public void setDummyDate(String dummyDate) {
+        this.dummyDate = dummyDate;
     }
 }

@@ -3,16 +3,21 @@ package com.IyfGZB.services;
 
 import com.IyfGZB.CourseDTO.CommonResponseDTO;
 import com.IyfGZB.NotificationServices.SeminarNotificationService;
+import com.IyfGZB.constants.AttendanceConstant;
 import com.IyfGZB.constants.SeminarConstant;
 import com.IyfGZB.controller.AccountController;
 import com.IyfGZB.domain.Seminar;
+import com.IyfGZB.domain.SeminarAttendance;
 import com.IyfGZB.domain.SeminarRecord;
 import com.IyfGZB.domain.UserInfo;
+import com.IyfGZB.dto.SeminarAttendanceDTO;
 import com.IyfGZB.dto.SeminarDto;
 import com.IyfGZB.dto.SeminarRecordDTO;
 import com.IyfGZB.repositories.SeminarRecordRepo;
 import com.IyfGZB.repositories.SeminarRepo;
 import com.IyfGZB.securityservices.CurrentUser;
+import com.IyfGZB.util.MasterAttendanceExcelMaker;
+import org.joda.time.DateTimeComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +28,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -42,6 +50,10 @@ public class SeminarOperation {
     @Autowired
     CallingSewaService callingSewaService;
 
+
+    @Autowired
+    private MasterAttendanceExcelMaker masterAttendanceExcelMaker;
+
     public static final Logger logger = LoggerFactory.getLogger(SeminarOperation.class);
 
     public CommonResponseDTO createSeminar(Seminar seminar){
@@ -55,7 +67,7 @@ public class SeminarOperation {
             seminarRepo.save(seminar);
 
 //            notificationService.sendEmail(seminar);
-            callingSewaService.allocateCallingSewa(seminar);
+//            callingSewaService.allocateCallingSewa(seminar);
 
             return new CommonResponseDTO("success","Seminar Created Successfully");
         }catch (Exception e){

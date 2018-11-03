@@ -22,6 +22,7 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
       List<UserInfo> findAllByClassLevelAndCity(String classLevel, String city);
       List<UserInfo> findAllByCity(String city);
       List<UserInfo> findAllByRoles(Role role);
+      List<UserInfo> findAllByClassLevel(String classLevel);
 
 
     @Override

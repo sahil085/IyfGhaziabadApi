@@ -2,19 +2,17 @@ package com.IyfGZB.controller;
 
 
 import com.IyfGZB.CourseDTO.CommonResponseDTO;
-import com.IyfGZB.domain.Seminar;
-import com.IyfGZB.dto.SeminarDto;
-import com.IyfGZB.repositories.SeminarRecordRepo;
 import com.IyfGZB.services.SchedularService;
+import com.IyfGZB.services.SeminarAttendanceOperation;
 import com.IyfGZB.services.SeminarOperation;
 import com.IyfGZB.services.SeminarRecordService;
+import com.IyfGZB.util.MasterAttendanceExcelMaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -31,11 +29,23 @@ public class SeminarController {
     @Autowired
     private SchedularService schedularService;
 
-    @GetMapping("/sheet")
-    public void sendSheet(){
-        schedularService.sendSeminarAttendanceSheet();
+    @Autowired
+    private SeminarAttendanceOperation seminarAttendanceOperation;
+
+    @GetMapping("/sheet/{seminarId}")
+    public void sendSheet(@PathVariable(value = "seminarId") Long seminarId){
+        schedularService.sendSeminarAttendanceSheet(seminarId);
     }
 
+    @GetMapping("/masterSheet/{category}")
+    public String generateMasterSheet(@PathVariable("category") String category){
+        return seminarAttendanceOperation.generateMasterSheet(category);
+
+    }
+    @GetMapping("/populateAttendance")
+    public String populateAttendance(){
+       return seminarAttendanceOperation.populateSeminarAttendance();
+    }
     @GetMapping("/upcomingSeminars/{vedicLevel}/{pageNumber}/{itemPerPage}")
     public HashMap<String,Object> getUpComingSeminars(@PathVariable("vedicLevel") Integer vediclevel,
                                                         @PathVariable("pageNumber") Integer pageNumber,

@@ -47,8 +47,8 @@ private GoogleDriveService googleDriveService;
     {
         try{
 
-                String fileUrl=googleDriveService.uploadFile(seminar,multipartFile);
-                seminar.setThumbNailUrl(fileUrl);
+//                String fileUrl=googleDriveService.uploadFile(seminar,multipartFile);
+//                seminar.setThumbNailUrl(fileUrl);
                 return new ResponseEntity<>(seminarOperation.createSeminar(seminar),HttpStatus.OK);
 
         }catch (Exception e){

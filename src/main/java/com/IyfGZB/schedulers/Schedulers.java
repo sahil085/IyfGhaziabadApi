@@ -17,6 +17,6 @@ public class Schedulers {
     SchedularService schedularService;
     @Scheduled(cron = "0 0 23 ? * SUN *")
     public void sendAttendanceSheet(){
-        schedularService.sendSeminarAttendanceSheet();
+//        schedularService.sendSeminarAttendanceSheet();
     }
 }

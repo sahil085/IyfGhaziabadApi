@@ -21,6 +21,7 @@ public interface SeminarAttendanceRepo extends JpaRepository<SeminarAttendance,L
     List<SeminarAttendance> findAllBySeminar(Seminar seminar);
     Page<SeminarAttendance> findAllBySeminar(Seminar seminar, Pageable pageable);
     SeminarAttendance findSeminarAttendanceBySeminarAndUserId(Seminar seminar, Long userId);
+    List<SeminarAttendance> findAllByUserAndSeminar(UserInfo userInfo, Seminar seminar);
 
 
 }
