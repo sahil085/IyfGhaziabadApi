@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.security.GeneralSecurityException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -36,12 +37,12 @@ import java.util.stream.IntStream;
  * Created by sahil on 4/8/18.
  */
 @Service
-public class CustomExcelMaker {
+public class UserExcelSheetMaker {
 
     private Sheets sheetService;
 
 
-    public void getSheetService() throws GeneralSecurityException,
+    public void getSheetService(List<UserInfo> userInfoList) throws GeneralSecurityException,
             IOException {
         InputStream input = new URL("https://github.com/sahil085/IyfGhaziabadApi/blob/JuneQa/Iskcongzb-0f45852524c6.p12?raw=true").openStream();
         URL url = new URL("http://github.com/sahil085/IyfGhaziabadApi/blob/JuneQa/Iskcongzb-0f45852524c6.p12");
@@ -79,16 +80,19 @@ public class CustomExcelMaker {
         sheetService = new Sheets.Builder(httpTransport, jsonFactory, credential)
                 .setApplicationName("INSERT_YOUR_APPLICATION_NAME")
                 .build();
-       writeDataInSheet();
+        writeDataInSheet(userInfoList);
     }
     public String createSpreadSheet() throws IOException {
         Sheets service = null;
         service = this.sheetService;
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+       String date = simpleDateFormat.format(new Date());
+
         // [START sheets_create]
         Spreadsheet spreadsheet = new Spreadsheet()
                 .setProperties(new SpreadsheetProperties()
-                        .setTitle("Dummy title hare krishna"));
+                        .setTitle("User List ( "+date+" )"));
         spreadsheet = service.spreadsheets().create(spreadsheet)
                 .setFields("spreadsheetId")
                 .execute();
@@ -97,24 +101,12 @@ public class CustomExcelMaker {
         return spreadsheet.getSpreadsheetId();
     }
 
-    public void writeDataInSheet() {
+    public void writeDataInSheet(List<UserInfo> userInfoList) {
 
         try {
             String id = createSpreadSheet();
             String writeRange ="Sheet1!E5";
 
-//        Make Data
-
-            List<UserInfo> userInfoList = new ArrayList<>();
-
-            IntStream.range(0,20).forEach(index -> {
-                UserInfo userInfo = new UserInfo();
-                userInfo.setClassLevel(ClassLevel.VEDIC_LEVEL_TWO);
-                userInfo.setMobileNumber(9999999999l);
-                userInfo.setUsername("Hare Krishna");
-                userInfo.setEmail("dummy@gmail.com");
-                userInfoList.add(userInfo);
-            });
 
 
 
@@ -199,7 +191,7 @@ public class CustomExcelMaker {
                         .setCell(new CellData()
                                 .setUserEnteredValue( new ExtendedValue().setStringValue("Contact Number"))
                                 .setUserEnteredFormat(new CellFormat()
-                                      .setHorizontalAlignment("CENTER")
+                                        .setHorizontalAlignment("CENTER")
                                         .setTextFormat(new TextFormat()
                                                 .setFontSize(15)
                                                 .setBold(Boolean.TRUE)
@@ -260,9 +252,9 @@ public class CustomExcelMaker {
         );
         return requests;
     }
-    public void sendUserListExcelSheet(){
+    public void sendUserListExcelSheet(List<UserInfo> userInfoList){
         try {
-            getSheetService();
+            getSheetService(userInfoList);
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {

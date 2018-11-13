@@ -3,6 +3,7 @@ package com.IyfGZB.controller;
 import com.IyfGZB.dto.UserListDTO;
 import com.IyfGZB.dto.UserProfileEditDTO;
 import com.IyfGZB.services.UserInfoOperation;
+import com.IyfGZB.util.UserExcelSheetMaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class UserInfoController {
 
     @Autowired
     UserInfoOperation userInfoOperation;
+
 
     @PreAuthorize("hasAnyAuthority('ADMIN','IYFVolunteer')")
     @GetMapping("/usersForSeminarAttendance/{input}")
@@ -50,6 +52,11 @@ public class UserInfoController {
     @PutMapping("/editProfile")
     public UserProfileEditDTO updateProfileDetails(@RequestBody UserProfileEditDTO userProfileEditDTO){
        return userInfoOperation.updateUserprofile(userProfileEditDTO);
+    }
+
+    @GetMapping("/sheet/userList")
+    public String generateUserListSheet(){
+       return userInfoOperation.generateUserExcelSheet();
     }
 
 }

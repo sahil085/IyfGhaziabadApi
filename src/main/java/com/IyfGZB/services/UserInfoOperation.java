@@ -8,6 +8,7 @@ import com.IyfGZB.dto.UserProfileEditDTO;
 import com.IyfGZB.repositories.UserInfoRepository;
 import com.IyfGZB.securityservices.CurrentUser;
 import com.IyfGZB.userdto.UserDto;
+import com.IyfGZB.util.UserExcelSheetMaker;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,8 @@ public class UserInfoOperation {
 
     @Autowired
     public ModelMapper modelMapper;
-
+    @Autowired
+    UserExcelSheetMaker userExcelSheetMaker;
 
     @Autowired
         private UserInfoRepository userInfoRepository;
@@ -112,6 +114,18 @@ public class UserInfoOperation {
         }catch (Exception e){
             logger.error(e.getMessage());
             return null;
+        }
+
+    }
+
+    public String generateUserExcelSheet(){
+        try{
+            List<UserInfo> userInfoList = userInfoRepository.findAll();
+            userExcelSheetMaker.sendUserListExcelSheet(userInfoList);
+            return "Excel Sheet of user list generated";
+        } catch (Exception e){
+            logger.error(e.getMessage());
+            return "Error in making user list sheet";
         }
 
     }

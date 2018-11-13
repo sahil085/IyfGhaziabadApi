@@ -6,6 +6,7 @@ import com.IyfGZB.services.SchedularService;
 import com.IyfGZB.services.SeminarAttendanceOperation;
 import com.IyfGZB.services.SeminarOperation;
 import com.IyfGZB.services.SeminarRecordService;
+import com.IyfGZB.util.CustomExcelMaker;
 import com.IyfGZB.util.MasterAttendanceExcelMaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,8 @@ public class SeminarController {
 
     @Autowired
     private SchedularService schedularService;
+    @Autowired
+    private CustomExcelMaker customExcelMaker;
 
     @Autowired
     private SeminarAttendanceOperation seminarAttendanceOperation;
@@ -36,6 +39,7 @@ public class SeminarController {
     public void sendSheet(@PathVariable(value = "seminarId") Long seminarId){
         schedularService.sendSeminarAttendanceSheet(seminarId);
     }
+
 
     @GetMapping("/masterSheet/{category}")
     public String generateMasterSheet(@PathVariable("category") String category){
